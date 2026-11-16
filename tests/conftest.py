@@ -19,6 +19,20 @@ Row = tuple[str, str, object]
 
 MAIN_LINE_CODES = ("C0060", "C0070", "C0080", "C0120")
 
+EIOPA_FILE_NAME = "SA_Premiums_Claims_Expenses.csv"
+EIOPA_HEADER = [
+    "Reporting country",
+    "Reference period",
+    "Item",
+    "Business type",
+    "Item code",
+    "Value",
+    "Date of extraction (yyyymmdd)",
+    "Number of submissions (per reporting country, reference date and undertaking type)",
+]
+# One EIOPA test row: (country, period, business type, item code, value).
+EiopaRow = tuple[str, str, str, str, object]
+
 
 def balanced_rows() -> list[Row]:
     """Four main lines that add up to the total, with gross minus ceded equal to net."""
@@ -60,21 +74,69 @@ def write_reference_values(paths: Paths, rows: list[tuple[str, int, str, object]
             writer.writerow([insurer, year, metric, value, "test"])
 
 
-@pytest.fixture
-def project(tmp_path: Path) -> Paths:
-    """An empty project in a temp folder: the real line groups, no reference values yet."""
-    paths = Paths(root=tmp_path)
+def market_rows(
+    country: str,
+    year: int,
+    earned: tuple[object, object, object] = (600, 300, 100),
+    claims: tuple[object, object, object] = (400, 200, 50),
+) -> list[EiopaRow]:
+    """Non-life gross earned premium and gross claims of one country and year."""
+    period = f"Y{year}"
+    codes = ("R0210", "R0220", "R0230", "R0310", "R0320", "R0330")
+    return [
+        (country, period, "Non-Life", code, value)
+        for code, value in zip(codes, earned + claims, strict=True)
+    ]
+
+
+def write_eiopa_file(
+    paths: Paths,
+    rows: list[EiopaRow],
+    header: list[str] | None = None,
+    name: str = EIOPA_FILE_NAME,
+) -> Path:
+    """Write an EIOPA statistics file with the layout of the real download."""
+    paths.eiopa_dir.mkdir(parents=True, exist_ok=True)
+    path = paths.eiopa_dir / name
+    with path.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.writer(handle)
+        writer.writerow(header or EIOPA_HEADER)
+        for country, period, business_type, item_code, value in rows:
+            writer.writerow(
+                [country, period, "item", business_type, item_code, value, "20260723", 5]
+            )
+    return path
+
+
+def new_project(root: Path) -> Paths:
+    """An empty project: the real line groups and insurers, no reference values, and a
+    small EIOPA file with Germany, another country and a life row."""
+    paths = Paths(root=root)
     paths.sfcr_dir.mkdir(parents=True)
     paths.reference_dir.mkdir(parents=True)
-    shutil.copy(REPO_ROOT / "data" / "reference" / "lob_groups.csv", paths.reference_dir)
+    for name in ("lob_groups.csv", "insurers.csv"):
+        shutil.copy(REPO_ROOT / "data" / "reference" / name, paths.reference_dir)
     write_reference_values(paths, [])
+    write_eiopa_file(
+        paths,
+        market_rows("GERMANY", 2025)
+        + market_rows("FRANCE", 2025, earned=(1, 1, 1), claims=(9, 9, 9))
+        + [("GERMANY", "Y2025", "Life", "R1410", 777)],
+    )
     return paths
+
+
+@pytest.fixture
+def project(tmp_path: Path) -> Paths:
+    """An empty project in a temp folder, see new_project."""
+    return new_project(tmp_path)
 
 
 @pytest.fixture
 def real_project(tmp_path: Path) -> Paths:
     """The real raw and reference files, with the warehouse in a temp folder."""
     shutil.copytree(REPO_ROOT / "data" / "raw" / "sfcr", tmp_path / "data" / "raw" / "sfcr")
+    shutil.copytree(REPO_ROOT / "data" / "raw" / "eiopa", tmp_path / "data" / "raw" / "eiopa")
     shutil.copytree(REPO_ROOT / "data" / "reference", tmp_path / "data" / "reference")
     return Paths(root=tmp_path)
 

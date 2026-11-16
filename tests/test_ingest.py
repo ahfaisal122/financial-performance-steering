@@ -1,4 +1,4 @@
-"""Ingestion: FR-1.1 (raw load), FR-1.3 (idempotent runs), data rules 1, 2 and 8."""
+"""Ingestion: FR-1.1 (SFCR load), FR-1.2 (EIOPA load), FR-1.3 (idempotent runs), data rules."""
 
 from __future__ import annotations
 
@@ -8,26 +8,26 @@ from decimal import Decimal
 import pytest
 
 from cockpit import pipeline
-from cockpit.ingest import IngestError, load_sfcr
-from conftest import balanced_rows, replace_value, write_sfcr_file
-
-ALL_TABLES = (
-    "raw_s050102",
-    "raw_load_log",
-    "ref_lob_groups",
-    "ref_dq_reference_values",
-    "dq_reconciliation",
-    "dq_reference_check",
-    "dq_net_check",
-    "dq_completeness",
+from cockpit.ingest import IngestError, load_eiopa, load_sfcr
+from conftest import (
+    EIOPA_HEADER,
+    balanced_rows,
+    market_rows,
+    replace_value,
+    write_eiopa_file,
+    write_sfcr_file,
 )
 
 
 def snapshot(con) -> dict[str, list[tuple]]:
-    """Every table, fully sorted, so two runs can be compared row by row."""
-    return {
-        table: con.execute(f"SELECT * FROM {table} ORDER BY ALL").fetchall() for table in ALL_TABLES
-    }
+    """Every table and view, fully sorted, so two runs can be compared row by row."""
+    names = [
+        name
+        for (name,) in con.execute(
+            "SELECT table_name FROM information_schema.tables ORDER BY table_name"
+        ).fetchall()
+    ]
+    return {name: con.execute(f"SELECT * FROM {name} ORDER BY ALL").fetchall() for name in names}
 
 
 def test_real_files_load_1186_rows(real_project, open_warehouse):
@@ -151,3 +151,144 @@ def test_text_in_the_value_column_stops_and_loads_nothing(project, open_warehous
 def test_no_files_stops(project, open_warehouse):
     with pytest.raises(IngestError, match="No SFCR files found"):
         load_sfcr(open_warehouse(project), project)
+
+
+# FR-1.2: the EIOPA file
+
+
+def test_real_eiopa_file_loads_germany_for_2016_to_2025(real_project, open_warehouse):
+    con = open_warehouse(real_project)
+    result = load_eiopa(con, real_project)
+
+    assert result.rows_in_table == 921
+    assert con.execute("SELECT DISTINCT reporting_country FROM raw_eiopa").fetchall() == [
+        ("GERMANY",)
+    ]
+    periods = [
+        p
+        for (p,) in con.execute(
+            "SELECT DISTINCT reference_period FROM raw_eiopa ORDER BY 1"
+        ).fetchall()
+    ]
+    assert periods == [f"Y{year}" for year in range(2016, 2026)]
+    (without_lineage,) = con.execute(
+        "SELECT COUNT(*) FROM raw_eiopa WHERE source_file IS NULL OR loaded_at IS NULL"
+    ).fetchone()
+    assert without_lineage == 0
+
+
+def test_real_eiopa_values_are_loaded_as_delivered(real_project, open_warehouse):
+    con = open_warehouse(real_project)
+    load_eiopa(con, real_project)
+
+    # Germany 2025, non-life, gross written premium direct business, as printed in the file.
+    assert con.execute(
+        "SELECT value FROM raw_eiopa WHERE reference_period = 'Y2025' AND item_code = 'R0110'"
+    ).fetchone() == (123498.821642,)
+    # Heading rows such as "Premiums written" carry no value: NULL, not zero.
+    assert con.execute(
+        "SELECT value FROM raw_eiopa WHERE reference_period = 'Y2025' AND item_code = 'R0101'"
+    ).fetchone() == (None,)
+
+
+def test_eiopa_columns_are_found_in_any_order_and_spelling_of_the_long_headers(
+    project, open_warehouse
+):
+    header = [
+        "Item code",
+        "Value",
+        "REFERENCE PERIOD",
+        "Reporting country",
+        "Business type",
+        "Item",
+        "Number of submissions",
+        "Date of extraction",
+    ]
+    path = project.eiopa_dir / "SA_Premiums_Claims_Expenses.csv"
+    path.write_text(
+        ",".join(header) + "\n" + "R0210,12.5,Y2025,Germany,Non-Life,Gross,7,20260101\n"
+    )
+    con = open_warehouse(project)
+
+    load_eiopa(con, project)
+
+    assert con.execute(
+        "SELECT reporting_country, reference_period, item, business_type, item_code, value, "
+        "extraction_date, submissions FROM raw_eiopa"
+    ).fetchall() == [("Germany", "Y2025", "Gross", "Non-Life", "R0210", 12.5, "20260101", 7)]
+
+
+def test_changed_eiopa_file_replaces_the_old_rows(project, open_warehouse):
+    con = open_warehouse(project)
+    load_eiopa(con, project)
+
+    write_eiopa_file(project, market_rows("GERMANY", 2024) + market_rows("GERMANY", 2025))
+    result = load_eiopa(con, project)
+
+    assert (result.loaded, result.rows_in_table) == (True, 12)
+    assert load_eiopa(con, project).loaded is False
+
+
+def test_reloading_sfcr_files_leaves_the_eiopa_load_alone(project, open_warehouse):
+    write_sfcr_file(project, "Test SE", 2025, balanced_rows())
+    con = open_warehouse(project)
+    load_eiopa(con, project)
+
+    load_sfcr(con, project)
+
+    assert load_eiopa(con, project).loaded is False
+    assert con.execute("SELECT COUNT(*) FROM raw_eiopa").fetchone() == (7,)
+
+
+def test_missing_eiopa_column_stops_and_names_it(project, open_warehouse):
+    header = [name for name in EIOPA_HEADER if name != "Item code"] + ["Code"]
+    write_eiopa_file(project, market_rows("GERMANY", 2025), header=header)
+
+    with pytest.raises(IngestError, match="column not found: Item code"):
+        load_eiopa(open_warehouse(project), project)
+
+
+def test_eiopa_file_without_germany_stops_and_lists_the_countries(project, open_warehouse):
+    write_eiopa_file(project, market_rows("FRANCE", 2025) + market_rows("DE", 2025))
+
+    with pytest.raises(IngestError, match="no rows for reporting country GERMANY") as stopped:
+        load_eiopa(open_warehouse(project), project)
+    assert "DE, FRANCE" in str(stopped.value)
+
+
+def test_missing_eiopa_file_stops_with_the_download_path(project, open_warehouse):
+    (project.eiopa_dir / "SA_Premiums_Claims_Expenses.csv").unlink()
+
+    with pytest.raises(IngestError, match="found 0") as stopped:
+        load_eiopa(open_warehouse(project), project)
+    assert "eiopa.europa.eu" in str(stopped.value)
+
+
+def test_two_eiopa_files_stop(project, open_warehouse):
+    write_eiopa_file(project, market_rows("GERMANY", 2025), name="second.csv")
+
+    with pytest.raises(IngestError, match="found 2"):
+        load_eiopa(open_warehouse(project), project)
+
+
+def test_eiopa_period_that_is_not_a_year_stops_and_loads_nothing(project, open_warehouse):
+    write_eiopa_file(project, [("GERMANY", "2025Q4", "Non-Life", "R0210", 1)])
+    con = open_warehouse(project)
+
+    with pytest.raises(IngestError, match="not a year like Y2025: 2025Q4"):
+        load_eiopa(con, project)
+    assert con.execute("SELECT COUNT(*) FROM raw_eiopa").fetchone() == (0,)
+
+
+def test_eiopa_duplicate_item_stops(project, open_warehouse):
+    write_eiopa_file(project, market_rows("GERMANY", 2025) + market_rows("GERMANY", 2025))
+
+    with pytest.raises(IngestError, match="more than one row"):
+        load_eiopa(open_warehouse(project), project)
+
+
+def test_eiopa_text_in_the_value_column_stops(project, open_warehouse):
+    write_eiopa_file(project, [("GERMANY", "Y2025", "Non-Life", "R0210", "n/a")])
+
+    with pytest.raises(IngestError, match="could not be loaded"):
+        load_eiopa(open_warehouse(project), project)
