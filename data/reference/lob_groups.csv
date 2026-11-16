@@ -1,0 +1,17 @@
+lob_code,line_group,is_main_line
+C0010,Other,false
+C0020,Other,false
+C0030,Other,false
+C0040,Motor,false
+C0050,Motor,false
+C0060,"Marine, aviation and transport",true
+C0070,Property,true
+C0080,Liability,true
+C0090,Other,false
+C0100,Other,false
+C0110,Other,false
+C0120,Financial lines,true
+C0130,Other,false
+C0140,Liability,true
+C0150,"Marine, aviation and transport",true
+C0160,Property,true

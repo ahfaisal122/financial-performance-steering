@@ -1,0 +1,194 @@
+insurer,year,template,lob_code,lob_name_de,lob_name_en,business_type,row_code,metric,value_teur
+AGCS SE,2022,S.05.01.02,C0010,Krankheitskostenversicherung,Medical expense,direct_prop,R0110,written_gross_direct,42228
+AGCS SE,2022,S.05.01.02,C0010,Krankheitskostenversicherung,Medical expense,direct_prop,R0120,written_gross_prop_re,6187
+AGCS SE,2022,S.05.01.02,C0010,Krankheitskostenversicherung,Medical expense,direct_prop,R0140,written_reinsurers_share,43403
+AGCS SE,2022,S.05.01.02,C0010,Krankheitskostenversicherung,Medical expense,direct_prop,R0200,written_net,5013
+AGCS SE,2022,S.05.01.02,C0010,Krankheitskostenversicherung,Medical expense,direct_prop,R0210,earned_gross_direct,22406
+AGCS SE,2022,S.05.01.02,C0010,Krankheitskostenversicherung,Medical expense,direct_prop,R0220,earned_gross_prop_re,5419
+AGCS SE,2022,S.05.01.02,C0010,Krankheitskostenversicherung,Medical expense,direct_prop,R0240,earned_reinsurers_share,23561
+AGCS SE,2022,S.05.01.02,C0010,Krankheitskostenversicherung,Medical expense,direct_prop,R0300,earned_net,4264
+AGCS SE,2022,S.05.01.02,C0010,Krankheitskostenversicherung,Medical expense,direct_prop,R0310,claims_gross_direct,12776
+AGCS SE,2022,S.05.01.02,C0010,Krankheitskostenversicherung,Medical expense,direct_prop,R0320,claims_gross_prop_re,-1897
+AGCS SE,2022,S.05.01.02,C0010,Krankheitskostenversicherung,Medical expense,direct_prop,R0340,claims_reinsurers_share,9435
+AGCS SE,2022,S.05.01.02,C0010,Krankheitskostenversicherung,Medical expense,direct_prop,R0400,claims_net,1444
+AGCS SE,2022,S.05.01.02,C0010,Krankheitskostenversicherung,Medical expense,direct_prop,R0410,other_tp_change_gross_direct,251
+AGCS SE,2022,S.05.01.02,C0010,Krankheitskostenversicherung,Medical expense,direct_prop,R0440,other_tp_change_reinsurers_share,258
+AGCS SE,2022,S.05.01.02,C0010,Krankheitskostenversicherung,Medical expense,direct_prop,R0500,other_tp_change_net,-7
+AGCS SE,2022,S.05.01.02,C0010,Krankheitskostenversicherung,Medical expense,direct_prop,R0550,expenses_incurred,2747
+AGCS SE,2022,S.05.01.02,C0020,Einkommensersatzversicherung,Income protection,direct_prop,R0110,written_gross_direct,2882
+AGCS SE,2022,S.05.01.02,C0020,Einkommensersatzversicherung,Income protection,direct_prop,R0120,written_gross_prop_re,1871
+AGCS SE,2022,S.05.01.02,C0020,Einkommensersatzversicherung,Income protection,direct_prop,R0140,written_reinsurers_share,3647
+AGCS SE,2022,S.05.01.02,C0020,Einkommensersatzversicherung,Income protection,direct_prop,R0200,written_net,1106
+AGCS SE,2022,S.05.01.02,C0020,Einkommensersatzversicherung,Income protection,direct_prop,R0210,earned_gross_direct,3056
+AGCS SE,2022,S.05.01.02,C0020,Einkommensersatzversicherung,Income protection,direct_prop,R0220,earned_gross_prop_re,1834
+AGCS SE,2022,S.05.01.02,C0020,Einkommensersatzversicherung,Income protection,direct_prop,R0240,earned_reinsurers_share,3505
+AGCS SE,2022,S.05.01.02,C0020,Einkommensersatzversicherung,Income protection,direct_prop,R0300,earned_net,1385
+AGCS SE,2022,S.05.01.02,C0020,Einkommensersatzversicherung,Income protection,direct_prop,R0310,claims_gross_direct,605
+AGCS SE,2022,S.05.01.02,C0020,Einkommensersatzversicherung,Income protection,direct_prop,R0320,claims_gross_prop_re,-18
+AGCS SE,2022,S.05.01.02,C0020,Einkommensersatzversicherung,Income protection,direct_prop,R0340,claims_reinsurers_share,398
+AGCS SE,2022,S.05.01.02,C0020,Einkommensersatzversicherung,Income protection,direct_prop,R0400,claims_net,189
+AGCS SE,2022,S.05.01.02,C0020,Einkommensersatzversicherung,Income protection,direct_prop,R0440,other_tp_change_reinsurers_share,3
+AGCS SE,2022,S.05.01.02,C0020,Einkommensersatzversicherung,Income protection,direct_prop,R0500,other_tp_change_net,-3
+AGCS SE,2022,S.05.01.02,C0020,Einkommensersatzversicherung,Income protection,direct_prop,R0550,expenses_incurred,852
+AGCS SE,2022,S.05.01.02,C0030,Arbeitsunfallversicherung,Workers compensation,direct_prop,R0320,claims_gross_prop_re,-16
+AGCS SE,2022,S.05.01.02,C0030,Arbeitsunfallversicherung,Workers compensation,direct_prop,R0340,claims_reinsurers_share,-16
+AGCS SE,2022,S.05.01.02,C0040,Kraftfahrzeughaftpflichtversicherung,Motor vehicle liability,direct_prop,R0110,written_gross_direct,10936
+AGCS SE,2022,S.05.01.02,C0040,Kraftfahrzeughaftpflichtversicherung,Motor vehicle liability,direct_prop,R0120,written_gross_prop_re,-6
+AGCS SE,2022,S.05.01.02,C0040,Kraftfahrzeughaftpflichtversicherung,Motor vehicle liability,direct_prop,R0140,written_reinsurers_share,10928
+AGCS SE,2022,S.05.01.02,C0040,Kraftfahrzeughaftpflichtversicherung,Motor vehicle liability,direct_prop,R0200,written_net,2
+AGCS SE,2022,S.05.01.02,C0040,Kraftfahrzeughaftpflichtversicherung,Motor vehicle liability,direct_prop,R0210,earned_gross_direct,10794
+AGCS SE,2022,S.05.01.02,C0040,Kraftfahrzeughaftpflichtversicherung,Motor vehicle liability,direct_prop,R0220,earned_gross_prop_re,-6
+AGCS SE,2022,S.05.01.02,C0040,Kraftfahrzeughaftpflichtversicherung,Motor vehicle liability,direct_prop,R0240,earned_reinsurers_share,10664
+AGCS SE,2022,S.05.01.02,C0040,Kraftfahrzeughaftpflichtversicherung,Motor vehicle liability,direct_prop,R0300,earned_net,124
+AGCS SE,2022,S.05.01.02,C0040,Kraftfahrzeughaftpflichtversicherung,Motor vehicle liability,direct_prop,R0310,claims_gross_direct,4532
+AGCS SE,2022,S.05.01.02,C0040,Kraftfahrzeughaftpflichtversicherung,Motor vehicle liability,direct_prop,R0320,claims_gross_prop_re,-261
+AGCS SE,2022,S.05.01.02,C0040,Kraftfahrzeughaftpflichtversicherung,Motor vehicle liability,direct_prop,R0340,claims_reinsurers_share,4177
+AGCS SE,2022,S.05.01.02,C0040,Kraftfahrzeughaftpflichtversicherung,Motor vehicle liability,direct_prop,R0400,claims_net,93
+AGCS SE,2022,S.05.01.02,C0040,Kraftfahrzeughaftpflichtversicherung,Motor vehicle liability,direct_prop,R0410,other_tp_change_gross_direct,13
+AGCS SE,2022,S.05.01.02,C0040,Kraftfahrzeughaftpflichtversicherung,Motor vehicle liability,direct_prop,R0440,other_tp_change_reinsurers_share,13
+AGCS SE,2022,S.05.01.02,C0040,Kraftfahrzeughaftpflichtversicherung,Motor vehicle liability,direct_prop,R0550,expenses_incurred,1124
+AGCS SE,2022,S.05.01.02,C0050,Sonstige Kraftfahrtversicherung,Other motor,direct_prop,R0110,written_gross_direct,16888
+AGCS SE,2022,S.05.01.02,C0050,Sonstige Kraftfahrtversicherung,Other motor,direct_prop,R0140,written_reinsurers_share,16954
+AGCS SE,2022,S.05.01.02,C0050,Sonstige Kraftfahrtversicherung,Other motor,direct_prop,R0200,written_net,-66
+AGCS SE,2022,S.05.01.02,C0050,Sonstige Kraftfahrtversicherung,Other motor,direct_prop,R0210,earned_gross_direct,15931
+AGCS SE,2022,S.05.01.02,C0050,Sonstige Kraftfahrtversicherung,Other motor,direct_prop,R0240,earned_reinsurers_share,15882
+AGCS SE,2022,S.05.01.02,C0050,Sonstige Kraftfahrtversicherung,Other motor,direct_prop,R0300,earned_net,49
+AGCS SE,2022,S.05.01.02,C0050,Sonstige Kraftfahrtversicherung,Other motor,direct_prop,R0310,claims_gross_direct,6053
+AGCS SE,2022,S.05.01.02,C0050,Sonstige Kraftfahrtversicherung,Other motor,direct_prop,R0340,claims_reinsurers_share,6186
+AGCS SE,2022,S.05.01.02,C0050,Sonstige Kraftfahrtversicherung,Other motor,direct_prop,R0400,claims_net,-133
+AGCS SE,2022,S.05.01.02,C0050,Sonstige Kraftfahrtversicherung,Other motor,direct_prop,R0410,other_tp_change_gross_direct,-2
+AGCS SE,2022,S.05.01.02,C0050,Sonstige Kraftfahrtversicherung,Other motor,direct_prop,R0440,other_tp_change_reinsurers_share,-2
+AGCS SE,2022,S.05.01.02,C0050,Sonstige Kraftfahrtversicherung,Other motor,direct_prop,R0550,expenses_incurred,2188
+AGCS SE,2022,S.05.01.02,C0060,"See-, Luftfahrt- und Transportversicherung","Marine, aviation and transport",direct_prop,R0110,written_gross_direct,508227
+AGCS SE,2022,S.05.01.02,C0060,"See-, Luftfahrt- und Transportversicherung","Marine, aviation and transport",direct_prop,R0120,written_gross_prop_re,198792
+AGCS SE,2022,S.05.01.02,C0060,"See-, Luftfahrt- und Transportversicherung","Marine, aviation and transport",direct_prop,R0140,written_reinsurers_share,444384
+AGCS SE,2022,S.05.01.02,C0060,"See-, Luftfahrt- und Transportversicherung","Marine, aviation and transport",direct_prop,R0200,written_net,262635
+AGCS SE,2022,S.05.01.02,C0060,"See-, Luftfahrt- und Transportversicherung","Marine, aviation and transport",direct_prop,R0210,earned_gross_direct,514470
+AGCS SE,2022,S.05.01.02,C0060,"See-, Luftfahrt- und Transportversicherung","Marine, aviation and transport",direct_prop,R0220,earned_gross_prop_re,199555
+AGCS SE,2022,S.05.01.02,C0060,"See-, Luftfahrt- und Transportversicherung","Marine, aviation and transport",direct_prop,R0240,earned_reinsurers_share,441050
+AGCS SE,2022,S.05.01.02,C0060,"See-, Luftfahrt- und Transportversicherung","Marine, aviation and transport",direct_prop,R0300,earned_net,272975
+AGCS SE,2022,S.05.01.02,C0060,"See-, Luftfahrt- und Transportversicherung","Marine, aviation and transport",direct_prop,R0310,claims_gross_direct,179720
+AGCS SE,2022,S.05.01.02,C0060,"See-, Luftfahrt- und Transportversicherung","Marine, aviation and transport",direct_prop,R0320,claims_gross_prop_re,124278
+AGCS SE,2022,S.05.01.02,C0060,"See-, Luftfahrt- und Transportversicherung","Marine, aviation and transport",direct_prop,R0340,claims_reinsurers_share,158943
+AGCS SE,2022,S.05.01.02,C0060,"See-, Luftfahrt- und Transportversicherung","Marine, aviation and transport",direct_prop,R0400,claims_net,145055
+AGCS SE,2022,S.05.01.02,C0060,"See-, Luftfahrt- und Transportversicherung","Marine, aviation and transport",direct_prop,R0410,other_tp_change_gross_direct,302
+AGCS SE,2022,S.05.01.02,C0060,"See-, Luftfahrt- und Transportversicherung","Marine, aviation and transport",direct_prop,R0440,other_tp_change_reinsurers_share,320
+AGCS SE,2022,S.05.01.02,C0060,"See-, Luftfahrt- und Transportversicherung","Marine, aviation and transport",direct_prop,R0500,other_tp_change_net,-19
+AGCS SE,2022,S.05.01.02,C0060,"See-, Luftfahrt- und Transportversicherung","Marine, aviation and transport",direct_prop,R0550,expenses_incurred,126070
+AGCS SE,2022,S.05.01.02,C0070,Feuer- und andere Sachversicherungen,Fire and other damage to property,direct_prop,R0110,written_gross_direct,1007871
+AGCS SE,2022,S.05.01.02,C0070,Feuer- und andere Sachversicherungen,Fire and other damage to property,direct_prop,R0120,written_gross_prop_re,1095333
+AGCS SE,2022,S.05.01.02,C0070,Feuer- und andere Sachversicherungen,Fire and other damage to property,direct_prop,R0140,written_reinsurers_share,1488679
+AGCS SE,2022,S.05.01.02,C0070,Feuer- und andere Sachversicherungen,Fire and other damage to property,direct_prop,R0200,written_net,614525
+AGCS SE,2022,S.05.01.02,C0070,Feuer- und andere Sachversicherungen,Fire and other damage to property,direct_prop,R0210,earned_gross_direct,981781
+AGCS SE,2022,S.05.01.02,C0070,Feuer- und andere Sachversicherungen,Fire and other damage to property,direct_prop,R0220,earned_gross_prop_re,1046680
+AGCS SE,2022,S.05.01.02,C0070,Feuer- und andere Sachversicherungen,Fire and other damage to property,direct_prop,R0240,earned_reinsurers_share,1446327
+AGCS SE,2022,S.05.01.02,C0070,Feuer- und andere Sachversicherungen,Fire and other damage to property,direct_prop,R0300,earned_net,582134
+AGCS SE,2022,S.05.01.02,C0070,Feuer- und andere Sachversicherungen,Fire and other damage to property,direct_prop,R0310,claims_gross_direct,674746
+AGCS SE,2022,S.05.01.02,C0070,Feuer- und andere Sachversicherungen,Fire and other damage to property,direct_prop,R0320,claims_gross_prop_re,321958
+AGCS SE,2022,S.05.01.02,C0070,Feuer- und andere Sachversicherungen,Fire and other damage to property,direct_prop,R0340,claims_reinsurers_share,602978
+AGCS SE,2022,S.05.01.02,C0070,Feuer- und andere Sachversicherungen,Fire and other damage to property,direct_prop,R0400,claims_net,393727
+AGCS SE,2022,S.05.01.02,C0070,Feuer- und andere Sachversicherungen,Fire and other damage to property,direct_prop,R0410,other_tp_change_gross_direct,-762
+AGCS SE,2022,S.05.01.02,C0070,Feuer- und andere Sachversicherungen,Fire and other damage to property,direct_prop,R0440,other_tp_change_reinsurers_share,-550
+AGCS SE,2022,S.05.01.02,C0070,Feuer- und andere Sachversicherungen,Fire and other damage to property,direct_prop,R0500,other_tp_change_net,-212
+AGCS SE,2022,S.05.01.02,C0070,Feuer- und andere Sachversicherungen,Fire and other damage to property,direct_prop,R0550,expenses_incurred,218511
+AGCS SE,2022,S.05.01.02,C0080,Allgemeine Haftpflichtversicherung,General liability,direct_prop,R0110,written_gross_direct,1382640
+AGCS SE,2022,S.05.01.02,C0080,Allgemeine Haftpflichtversicherung,General liability,direct_prop,R0120,written_gross_prop_re,604954
+AGCS SE,2022,S.05.01.02,C0080,Allgemeine Haftpflichtversicherung,General liability,direct_prop,R0140,written_reinsurers_share,1228176
+AGCS SE,2022,S.05.01.02,C0080,Allgemeine Haftpflichtversicherung,General liability,direct_prop,R0200,written_net,759419
+AGCS SE,2022,S.05.01.02,C0080,Allgemeine Haftpflichtversicherung,General liability,direct_prop,R0210,earned_gross_direct,1330251
+AGCS SE,2022,S.05.01.02,C0080,Allgemeine Haftpflichtversicherung,General liability,direct_prop,R0220,earned_gross_prop_re,584566
+AGCS SE,2022,S.05.01.02,C0080,Allgemeine Haftpflichtversicherung,General liability,direct_prop,R0240,earned_reinsurers_share,1181744
+AGCS SE,2022,S.05.01.02,C0080,Allgemeine Haftpflichtversicherung,General liability,direct_prop,R0300,earned_net,733073
+AGCS SE,2022,S.05.01.02,C0080,Allgemeine Haftpflichtversicherung,General liability,direct_prop,R0310,claims_gross_direct,756484
+AGCS SE,2022,S.05.01.02,C0080,Allgemeine Haftpflichtversicherung,General liability,direct_prop,R0320,claims_gross_prop_re,221049
+AGCS SE,2022,S.05.01.02,C0080,Allgemeine Haftpflichtversicherung,General liability,direct_prop,R0340,claims_reinsurers_share,383180
+AGCS SE,2022,S.05.01.02,C0080,Allgemeine Haftpflichtversicherung,General liability,direct_prop,R0400,claims_net,594353
+AGCS SE,2022,S.05.01.02,C0080,Allgemeine Haftpflichtversicherung,General liability,direct_prop,R0410,other_tp_change_gross_direct,2459
+AGCS SE,2022,S.05.01.02,C0080,Allgemeine Haftpflichtversicherung,General liability,direct_prop,R0440,other_tp_change_reinsurers_share,2411
+AGCS SE,2022,S.05.01.02,C0080,Allgemeine Haftpflichtversicherung,General liability,direct_prop,R0500,other_tp_change_net,48
+AGCS SE,2022,S.05.01.02,C0080,Allgemeine Haftpflichtversicherung,General liability,direct_prop,R0550,expenses_incurred,274010
+AGCS SE,2022,S.05.01.02,C0090,Kredit- und Kautionsversicherung,Credit and suretyship,direct_prop,R0110,written_gross_direct,-6
+AGCS SE,2022,S.05.01.02,C0090,Kredit- und Kautionsversicherung,Credit and suretyship,direct_prop,R0140,written_reinsurers_share,-6
+AGCS SE,2022,S.05.01.02,C0090,Kredit- und Kautionsversicherung,Credit and suretyship,direct_prop,R0210,earned_gross_direct,-6
+AGCS SE,2022,S.05.01.02,C0090,Kredit- und Kautionsversicherung,Credit and suretyship,direct_prop,R0240,earned_reinsurers_share,-6
+AGCS SE,2022,S.05.01.02,C0090,Kredit- und Kautionsversicherung,Credit and suretyship,direct_prop,R0310,claims_gross_direct,2
+AGCS SE,2022,S.05.01.02,C0090,Kredit- und Kautionsversicherung,Credit and suretyship,direct_prop,R0340,claims_reinsurers_share,2
+AGCS SE,2022,S.05.01.02,C0090,Kredit- und Kautionsversicherung,Credit and suretyship,direct_prop,R0550,expenses_incurred,1
+AGCS SE,2022,S.05.01.02,C0110,Beistand,Assistance,direct_prop,R0110,written_gross_direct,383
+AGCS SE,2022,S.05.01.02,C0110,Beistand,Assistance,direct_prop,R0140,written_reinsurers_share,384
+AGCS SE,2022,S.05.01.02,C0110,Beistand,Assistance,direct_prop,R0200,written_net,-1
+AGCS SE,2022,S.05.01.02,C0110,Beistand,Assistance,direct_prop,R0210,earned_gross_direct,356
+AGCS SE,2022,S.05.01.02,C0110,Beistand,Assistance,direct_prop,R0240,earned_reinsurers_share,348
+AGCS SE,2022,S.05.01.02,C0110,Beistand,Assistance,direct_prop,R0300,earned_net,8
+AGCS SE,2022,S.05.01.02,C0110,Beistand,Assistance,direct_prop,R0310,claims_gross_direct,6
+AGCS SE,2022,S.05.01.02,C0110,Beistand,Assistance,direct_prop,R0340,claims_reinsurers_share,4
+AGCS SE,2022,S.05.01.02,C0110,Beistand,Assistance,direct_prop,R0400,claims_net,2
+AGCS SE,2022,S.05.01.02,C0110,Beistand,Assistance,direct_prop,R0410,other_tp_change_gross_direct,4
+AGCS SE,2022,S.05.01.02,C0110,Beistand,Assistance,direct_prop,R0440,other_tp_change_reinsurers_share,4
+AGCS SE,2022,S.05.01.02,C0110,Beistand,Assistance,direct_prop,R0550,expenses_incurred,5
+AGCS SE,2022,S.05.01.02,C0120,Verschiedene finanzielle Verluste,Miscellaneous financial loss,direct_prop,R0110,written_gross_direct,262404
+AGCS SE,2022,S.05.01.02,C0120,Verschiedene finanzielle Verluste,Miscellaneous financial loss,direct_prop,R0120,written_gross_prop_re,213330
+AGCS SE,2022,S.05.01.02,C0120,Verschiedene finanzielle Verluste,Miscellaneous financial loss,direct_prop,R0140,written_reinsurers_share,351862
+AGCS SE,2022,S.05.01.02,C0120,Verschiedene finanzielle Verluste,Miscellaneous financial loss,direct_prop,R0200,written_net,123871
+AGCS SE,2022,S.05.01.02,C0120,Verschiedene finanzielle Verluste,Miscellaneous financial loss,direct_prop,R0210,earned_gross_direct,251658
+AGCS SE,2022,S.05.01.02,C0120,Verschiedene finanzielle Verluste,Miscellaneous financial loss,direct_prop,R0220,earned_gross_prop_re,211922
+AGCS SE,2022,S.05.01.02,C0120,Verschiedene finanzielle Verluste,Miscellaneous financial loss,direct_prop,R0240,earned_reinsurers_share,340866
+AGCS SE,2022,S.05.01.02,C0120,Verschiedene finanzielle Verluste,Miscellaneous financial loss,direct_prop,R0300,earned_net,122714
+AGCS SE,2022,S.05.01.02,C0120,Verschiedene finanzielle Verluste,Miscellaneous financial loss,direct_prop,R0310,claims_gross_direct,278094
+AGCS SE,2022,S.05.01.02,C0120,Verschiedene finanzielle Verluste,Miscellaneous financial loss,direct_prop,R0320,claims_gross_prop_re,201955
+AGCS SE,2022,S.05.01.02,C0120,Verschiedene finanzielle Verluste,Miscellaneous financial loss,direct_prop,R0340,claims_reinsurers_share,358298
+AGCS SE,2022,S.05.01.02,C0120,Verschiedene finanzielle Verluste,Miscellaneous financial loss,direct_prop,R0400,claims_net,121750
+AGCS SE,2022,S.05.01.02,C0120,Verschiedene finanzielle Verluste,Miscellaneous financial loss,direct_prop,R0410,other_tp_change_gross_direct,702
+AGCS SE,2022,S.05.01.02,C0120,Verschiedene finanzielle Verluste,Miscellaneous financial loss,direct_prop,R0440,other_tp_change_reinsurers_share,458
+AGCS SE,2022,S.05.01.02,C0120,Verschiedene finanzielle Verluste,Miscellaneous financial loss,direct_prop,R0500,other_tp_change_net,244
+AGCS SE,2022,S.05.01.02,C0120,Verschiedene finanzielle Verluste,Miscellaneous financial loss,direct_prop,R0550,expenses_incurred,34407
+AGCS SE,2022,S.05.01.02,C0140,Unfall,Casualty,nonprop_re,R0130,written_gross_nonprop_re,81091
+AGCS SE,2022,S.05.01.02,C0140,Unfall,Casualty,nonprop_re,R0140,written_reinsurers_share,48474
+AGCS SE,2022,S.05.01.02,C0140,Unfall,Casualty,nonprop_re,R0200,written_net,32617
+AGCS SE,2022,S.05.01.02,C0140,Unfall,Casualty,nonprop_re,R0230,earned_gross_nonprop_re,79217
+AGCS SE,2022,S.05.01.02,C0140,Unfall,Casualty,nonprop_re,R0240,earned_reinsurers_share,47708
+AGCS SE,2022,S.05.01.02,C0140,Unfall,Casualty,nonprop_re,R0300,earned_net,31508
+AGCS SE,2022,S.05.01.02,C0140,Unfall,Casualty,nonprop_re,R0330,claims_gross_nonprop_re,-20555
+AGCS SE,2022,S.05.01.02,C0140,Unfall,Casualty,nonprop_re,R0340,claims_reinsurers_share,-41032
+AGCS SE,2022,S.05.01.02,C0140,Unfall,Casualty,nonprop_re,R0400,claims_net,20478
+AGCS SE,2022,S.05.01.02,C0140,Unfall,Casualty,nonprop_re,R0550,expenses_incurred,-2885
+AGCS SE,2022,S.05.01.02,C0150,"See-, Luftfahrt- und Transportversicherung","Marine, aviation and transport",nonprop_re,R0130,written_gross_nonprop_re,65550
+AGCS SE,2022,S.05.01.02,C0150,"See-, Luftfahrt- und Transportversicherung","Marine, aviation and transport",nonprop_re,R0140,written_reinsurers_share,31684
+AGCS SE,2022,S.05.01.02,C0150,"See-, Luftfahrt- und Transportversicherung","Marine, aviation and transport",nonprop_re,R0200,written_net,33866
+AGCS SE,2022,S.05.01.02,C0150,"See-, Luftfahrt- und Transportversicherung","Marine, aviation and transport",nonprop_re,R0230,earned_gross_nonprop_re,63432
+AGCS SE,2022,S.05.01.02,C0150,"See-, Luftfahrt- und Transportversicherung","Marine, aviation and transport",nonprop_re,R0240,earned_reinsurers_share,29823
+AGCS SE,2022,S.05.01.02,C0150,"See-, Luftfahrt- und Transportversicherung","Marine, aviation and transport",nonprop_re,R0300,earned_net,33609
+AGCS SE,2022,S.05.01.02,C0150,"See-, Luftfahrt- und Transportversicherung","Marine, aviation and transport",nonprop_re,R0330,claims_gross_nonprop_re,81114
+AGCS SE,2022,S.05.01.02,C0150,"See-, Luftfahrt- und Transportversicherung","Marine, aviation and transport",nonprop_re,R0340,claims_reinsurers_share,10265
+AGCS SE,2022,S.05.01.02,C0150,"See-, Luftfahrt- und Transportversicherung","Marine, aviation and transport",nonprop_re,R0400,claims_net,70849
+AGCS SE,2022,S.05.01.02,C0150,"See-, Luftfahrt- und Transportversicherung","Marine, aviation and transport",nonprop_re,R0550,expenses_incurred,-313
+AGCS SE,2022,S.05.01.02,C0160,Sache,Property,nonprop_re,R0130,written_gross_nonprop_re,365447
+AGCS SE,2022,S.05.01.02,C0160,Sache,Property,nonprop_re,R0140,written_reinsurers_share,217100
+AGCS SE,2022,S.05.01.02,C0160,Sache,Property,nonprop_re,R0200,written_net,148347
+AGCS SE,2022,S.05.01.02,C0160,Sache,Property,nonprop_re,R0230,earned_gross_nonprop_re,348251
+AGCS SE,2022,S.05.01.02,C0160,Sache,Property,nonprop_re,R0240,earned_reinsurers_share,205262
+AGCS SE,2022,S.05.01.02,C0160,Sache,Property,nonprop_re,R0300,earned_net,142989
+AGCS SE,2022,S.05.01.02,C0160,Sache,Property,nonprop_re,R0330,claims_gross_nonprop_re,4623
+AGCS SE,2022,S.05.01.02,C0160,Sache,Property,nonprop_re,R0340,claims_reinsurers_share,-19416
+AGCS SE,2022,S.05.01.02,C0160,Sache,Property,nonprop_re,R0400,claims_net,24039
+AGCS SE,2022,S.05.01.02,C0160,Sache,Property,nonprop_re,R0550,expenses_incurred,21849
+AGCS SE,2022,S.05.01.02,C0200,Gesamt,Total,total,R0110,written_gross_direct,3234452
+AGCS SE,2022,S.05.01.02,C0200,Gesamt,Total,total,R0120,written_gross_prop_re,2120462
+AGCS SE,2022,S.05.01.02,C0200,Gesamt,Total,total,R0130,written_gross_nonprop_re,512088
+AGCS SE,2022,S.05.01.02,C0200,Gesamt,Total,total,R0140,written_reinsurers_share,3885668
+AGCS SE,2022,S.05.01.02,C0200,Gesamt,Total,total,R0200,written_net,1981334
+AGCS SE,2022,S.05.01.02,C0200,Gesamt,Total,total,R0210,earned_gross_direct,3130697
+AGCS SE,2022,S.05.01.02,C0200,Gesamt,Total,total,R0220,earned_gross_prop_re,2049970
+AGCS SE,2022,S.05.01.02,C0200,Gesamt,Total,total,R0230,earned_gross_nonprop_re,490900
+AGCS SE,2022,S.05.01.02,C0200,Gesamt,Total,total,R0240,earned_reinsurers_share,3746734
+AGCS SE,2022,S.05.01.02,C0200,Gesamt,Total,total,R0300,earned_net,1924833
+AGCS SE,2022,S.05.01.02,C0200,Gesamt,Total,total,R0310,claims_gross_direct,1913018
+AGCS SE,2022,S.05.01.02,C0200,Gesamt,Total,total,R0320,claims_gross_prop_re,867047
+AGCS SE,2022,S.05.01.02,C0200,Gesamt,Total,total,R0330,claims_gross_nonprop_re,65183
+AGCS SE,2022,S.05.01.02,C0200,Gesamt,Total,total,R0340,claims_reinsurers_share,1473402
+AGCS SE,2022,S.05.01.02,C0200,Gesamt,Total,total,R0400,claims_net,1371846
+AGCS SE,2022,S.05.01.02,C0200,Gesamt,Total,total,R0410,other_tp_change_gross_direct,2967
+AGCS SE,2022,S.05.01.02,C0200,Gesamt,Total,total,R0440,other_tp_change_reinsurers_share,2915
+AGCS SE,2022,S.05.01.02,C0200,Gesamt,Total,total,R0500,other_tp_change_net,51
+AGCS SE,2022,S.05.01.02,C0200,Gesamt,Total,total,R0550,expenses_incurred,678569
+AGCS SE,2022,S.05.01.02,C0200,Gesamt,Total,total,R1300,total_expenses,678569

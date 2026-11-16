@@ -1,0 +1,119 @@
+insurer,year,template,lob_code,lob_name_de,lob_name_en,business_type,row_code,metric,value_teur
+HDI Global SE,2024,S.05.01.02,C0020,Einkommensersatzversicherung,Income protection,direct_prop,R0110,written_gross_direct,78739
+HDI Global SE,2024,S.05.01.02,C0020,Einkommensersatzversicherung,Income protection,direct_prop,R0120,written_gross_prop_re,3483
+HDI Global SE,2024,S.05.01.02,C0020,Einkommensersatzversicherung,Income protection,direct_prop,R0140,written_reinsurers_share,4659
+HDI Global SE,2024,S.05.01.02,C0020,Einkommensersatzversicherung,Income protection,direct_prop,R0200,written_net,77563
+HDI Global SE,2024,S.05.01.02,C0020,Einkommensersatzversicherung,Income protection,direct_prop,R0210,earned_gross_direct,76117
+HDI Global SE,2024,S.05.01.02,C0020,Einkommensersatzversicherung,Income protection,direct_prop,R0220,earned_gross_prop_re,3876
+HDI Global SE,2024,S.05.01.02,C0020,Einkommensersatzversicherung,Income protection,direct_prop,R0240,earned_reinsurers_share,4770
+HDI Global SE,2024,S.05.01.02,C0020,Einkommensersatzversicherung,Income protection,direct_prop,R0300,earned_net,75224
+HDI Global SE,2024,S.05.01.02,C0020,Einkommensersatzversicherung,Income protection,direct_prop,R0310,claims_gross_direct,44222
+HDI Global SE,2024,S.05.01.02,C0020,Einkommensersatzversicherung,Income protection,direct_prop,R0320,claims_gross_prop_re,2959
+HDI Global SE,2024,S.05.01.02,C0020,Einkommensersatzversicherung,Income protection,direct_prop,R0340,claims_reinsurers_share,731
+HDI Global SE,2024,S.05.01.02,C0020,Einkommensersatzversicherung,Income protection,direct_prop,R0400,claims_net,46450
+HDI Global SE,2024,S.05.01.02,C0020,Einkommensersatzversicherung,Income protection,direct_prop,R0550,expenses_incurred,26269
+HDI Global SE,2024,S.05.01.02,C0040,Kraftfahrzeughaftpflichtversicherung,Motor vehicle liability,direct_prop,R0110,written_gross_direct,336366
+HDI Global SE,2024,S.05.01.02,C0040,Kraftfahrzeughaftpflichtversicherung,Motor vehicle liability,direct_prop,R0120,written_gross_prop_re,41792
+HDI Global SE,2024,S.05.01.02,C0040,Kraftfahrzeughaftpflichtversicherung,Motor vehicle liability,direct_prop,R0140,written_reinsurers_share,86279
+HDI Global SE,2024,S.05.01.02,C0040,Kraftfahrzeughaftpflichtversicherung,Motor vehicle liability,direct_prop,R0200,written_net,291879
+HDI Global SE,2024,S.05.01.02,C0040,Kraftfahrzeughaftpflichtversicherung,Motor vehicle liability,direct_prop,R0210,earned_gross_direct,330091
+HDI Global SE,2024,S.05.01.02,C0040,Kraftfahrzeughaftpflichtversicherung,Motor vehicle liability,direct_prop,R0220,earned_gross_prop_re,41979
+HDI Global SE,2024,S.05.01.02,C0040,Kraftfahrzeughaftpflichtversicherung,Motor vehicle liability,direct_prop,R0240,earned_reinsurers_share,83306
+HDI Global SE,2024,S.05.01.02,C0040,Kraftfahrzeughaftpflichtversicherung,Motor vehicle liability,direct_prop,R0300,earned_net,288764
+HDI Global SE,2024,S.05.01.02,C0040,Kraftfahrzeughaftpflichtversicherung,Motor vehicle liability,direct_prop,R0310,claims_gross_direct,257516
+HDI Global SE,2024,S.05.01.02,C0040,Kraftfahrzeughaftpflichtversicherung,Motor vehicle liability,direct_prop,R0320,claims_gross_prop_re,32825
+HDI Global SE,2024,S.05.01.02,C0040,Kraftfahrzeughaftpflichtversicherung,Motor vehicle liability,direct_prop,R0340,claims_reinsurers_share,86585
+HDI Global SE,2024,S.05.01.02,C0040,Kraftfahrzeughaftpflichtversicherung,Motor vehicle liability,direct_prop,R0400,claims_net,203756
+HDI Global SE,2024,S.05.01.02,C0040,Kraftfahrzeughaftpflichtversicherung,Motor vehicle liability,direct_prop,R0550,expenses_incurred,92009
+HDI Global SE,2024,S.05.01.02,C0050,Sonstige Kraftfahrtversicherung,Other motor,direct_prop,R0110,written_gross_direct,192462
+HDI Global SE,2024,S.05.01.02,C0050,Sonstige Kraftfahrtversicherung,Other motor,direct_prop,R0120,written_gross_prop_re,10013
+HDI Global SE,2024,S.05.01.02,C0050,Sonstige Kraftfahrtversicherung,Other motor,direct_prop,R0140,written_reinsurers_share,172855
+HDI Global SE,2024,S.05.01.02,C0050,Sonstige Kraftfahrtversicherung,Other motor,direct_prop,R0200,written_net,29620
+HDI Global SE,2024,S.05.01.02,C0050,Sonstige Kraftfahrtversicherung,Other motor,direct_prop,R0210,earned_gross_direct,187897
+HDI Global SE,2024,S.05.01.02,C0050,Sonstige Kraftfahrtversicherung,Other motor,direct_prop,R0220,earned_gross_prop_re,9995
+HDI Global SE,2024,S.05.01.02,C0050,Sonstige Kraftfahrtversicherung,Other motor,direct_prop,R0240,earned_reinsurers_share,164692
+HDI Global SE,2024,S.05.01.02,C0050,Sonstige Kraftfahrtversicherung,Other motor,direct_prop,R0300,earned_net,33200
+HDI Global SE,2024,S.05.01.02,C0050,Sonstige Kraftfahrtversicherung,Other motor,direct_prop,R0310,claims_gross_direct,156463
+HDI Global SE,2024,S.05.01.02,C0050,Sonstige Kraftfahrtversicherung,Other motor,direct_prop,R0320,claims_gross_prop_re,7318
+HDI Global SE,2024,S.05.01.02,C0050,Sonstige Kraftfahrtversicherung,Other motor,direct_prop,R0340,claims_reinsurers_share,119430
+HDI Global SE,2024,S.05.01.02,C0050,Sonstige Kraftfahrtversicherung,Other motor,direct_prop,R0400,claims_net,44351
+HDI Global SE,2024,S.05.01.02,C0050,Sonstige Kraftfahrtversicherung,Other motor,direct_prop,R0550,expenses_incurred,10246
+HDI Global SE,2024,S.05.01.02,C0060,"See-, Luftfahrt- und Transportversicherung","Marine, aviation and transport",direct_prop,R0110,written_gross_direct,516688
+HDI Global SE,2024,S.05.01.02,C0060,"See-, Luftfahrt- und Transportversicherung","Marine, aviation and transport",direct_prop,R0120,written_gross_prop_re,254441
+HDI Global SE,2024,S.05.01.02,C0060,"See-, Luftfahrt- und Transportversicherung","Marine, aviation and transport",direct_prop,R0140,written_reinsurers_share,695838
+HDI Global SE,2024,S.05.01.02,C0060,"See-, Luftfahrt- und Transportversicherung","Marine, aviation and transport",direct_prop,R0200,written_net,75291
+HDI Global SE,2024,S.05.01.02,C0060,"See-, Luftfahrt- und Transportversicherung","Marine, aviation and transport",direct_prop,R0210,earned_gross_direct,512539
+HDI Global SE,2024,S.05.01.02,C0060,"See-, Luftfahrt- und Transportversicherung","Marine, aviation and transport",direct_prop,R0220,earned_gross_prop_re,252899
+HDI Global SE,2024,S.05.01.02,C0060,"See-, Luftfahrt- und Transportversicherung","Marine, aviation and transport",direct_prop,R0240,earned_reinsurers_share,678301
+HDI Global SE,2024,S.05.01.02,C0060,"See-, Luftfahrt- und Transportversicherung","Marine, aviation and transport",direct_prop,R0300,earned_net,87137
+HDI Global SE,2024,S.05.01.02,C0060,"See-, Luftfahrt- und Transportversicherung","Marine, aviation and transport",direct_prop,R0310,claims_gross_direct,277391
+HDI Global SE,2024,S.05.01.02,C0060,"See-, Luftfahrt- und Transportversicherung","Marine, aviation and transport",direct_prop,R0320,claims_gross_prop_re,158015
+HDI Global SE,2024,S.05.01.02,C0060,"See-, Luftfahrt- und Transportversicherung","Marine, aviation and transport",direct_prop,R0340,claims_reinsurers_share,405921
+HDI Global SE,2024,S.05.01.02,C0060,"See-, Luftfahrt- und Transportversicherung","Marine, aviation and transport",direct_prop,R0400,claims_net,29485
+HDI Global SE,2024,S.05.01.02,C0060,"See-, Luftfahrt- und Transportversicherung","Marine, aviation and transport",direct_prop,R0550,expenses_incurred,160845
+HDI Global SE,2024,S.05.01.02,C0070,Feuer- und andere Sachversicherungen,Fire and other damage to property,direct_prop,R0110,written_gross_direct,1850701
+HDI Global SE,2024,S.05.01.02,C0070,Feuer- und andere Sachversicherungen,Fire and other damage to property,direct_prop,R0120,written_gross_prop_re,1575257
+HDI Global SE,2024,S.05.01.02,C0070,Feuer- und andere Sachversicherungen,Fire and other damage to property,direct_prop,R0140,written_reinsurers_share,2422693
+HDI Global SE,2024,S.05.01.02,C0070,Feuer- und andere Sachversicherungen,Fire and other damage to property,direct_prop,R0200,written_net,1003264
+HDI Global SE,2024,S.05.01.02,C0070,Feuer- und andere Sachversicherungen,Fire and other damage to property,direct_prop,R0210,earned_gross_direct,1777617
+HDI Global SE,2024,S.05.01.02,C0070,Feuer- und andere Sachversicherungen,Fire and other damage to property,direct_prop,R0220,earned_gross_prop_re,1492330
+HDI Global SE,2024,S.05.01.02,C0070,Feuer- und andere Sachversicherungen,Fire and other damage to property,direct_prop,R0240,earned_reinsurers_share,2335427
+HDI Global SE,2024,S.05.01.02,C0070,Feuer- und andere Sachversicherungen,Fire and other damage to property,direct_prop,R0300,earned_net,934520
+HDI Global SE,2024,S.05.01.02,C0070,Feuer- und andere Sachversicherungen,Fire and other damage to property,direct_prop,R0310,claims_gross_direct,906694
+HDI Global SE,2024,S.05.01.02,C0070,Feuer- und andere Sachversicherungen,Fire and other damage to property,direct_prop,R0320,claims_gross_prop_re,729133
+HDI Global SE,2024,S.05.01.02,C0070,Feuer- und andere Sachversicherungen,Fire and other damage to property,direct_prop,R0340,claims_reinsurers_share,1028404
+HDI Global SE,2024,S.05.01.02,C0070,Feuer- und andere Sachversicherungen,Fire and other damage to property,direct_prop,R0400,claims_net,607423
+HDI Global SE,2024,S.05.01.02,C0070,Feuer- und andere Sachversicherungen,Fire and other damage to property,direct_prop,R0550,expenses_incurred,944197
+HDI Global SE,2024,S.05.01.02,C0080,Allgemeine Haftpflichtversicherung,General liability,direct_prop,R0110,written_gross_direct,1650878
+HDI Global SE,2024,S.05.01.02,C0080,Allgemeine Haftpflichtversicherung,General liability,direct_prop,R0120,written_gross_prop_re,657639
+HDI Global SE,2024,S.05.01.02,C0080,Allgemeine Haftpflichtversicherung,General liability,direct_prop,R0140,written_reinsurers_share,1268382
+HDI Global SE,2024,S.05.01.02,C0080,Allgemeine Haftpflichtversicherung,General liability,direct_prop,R0200,written_net,1040135
+HDI Global SE,2024,S.05.01.02,C0080,Allgemeine Haftpflichtversicherung,General liability,direct_prop,R0210,earned_gross_direct,1615229
+HDI Global SE,2024,S.05.01.02,C0080,Allgemeine Haftpflichtversicherung,General liability,direct_prop,R0220,earned_gross_prop_re,629127
+HDI Global SE,2024,S.05.01.02,C0080,Allgemeine Haftpflichtversicherung,General liability,direct_prop,R0240,earned_reinsurers_share,1232624
+HDI Global SE,2024,S.05.01.02,C0080,Allgemeine Haftpflichtversicherung,General liability,direct_prop,R0300,earned_net,1011732
+HDI Global SE,2024,S.05.01.02,C0080,Allgemeine Haftpflichtversicherung,General liability,direct_prop,R0310,claims_gross_direct,1193887
+HDI Global SE,2024,S.05.01.02,C0080,Allgemeine Haftpflichtversicherung,General liability,direct_prop,R0320,claims_gross_prop_re,407455
+HDI Global SE,2024,S.05.01.02,C0080,Allgemeine Haftpflichtversicherung,General liability,direct_prop,R0340,claims_reinsurers_share,933231
+HDI Global SE,2024,S.05.01.02,C0080,Allgemeine Haftpflichtversicherung,General liability,direct_prop,R0400,claims_net,668110
+HDI Global SE,2024,S.05.01.02,C0080,Allgemeine Haftpflichtversicherung,General liability,direct_prop,R0550,expenses_incurred,537667
+HDI Global SE,2024,S.05.01.02,C0090,Kredit- und Kautionsversicherung,Credit and suretyship,direct_prop,R0110,written_gross_direct,25
+HDI Global SE,2024,S.05.01.02,C0090,Kredit- und Kautionsversicherung,Credit and suretyship,direct_prop,R0120,written_gross_prop_re,0
+HDI Global SE,2024,S.05.01.02,C0090,Kredit- und Kautionsversicherung,Credit and suretyship,direct_prop,R0140,written_reinsurers_share,0
+HDI Global SE,2024,S.05.01.02,C0090,Kredit- und Kautionsversicherung,Credit and suretyship,direct_prop,R0200,written_net,25
+HDI Global SE,2024,S.05.01.02,C0090,Kredit- und Kautionsversicherung,Credit and suretyship,direct_prop,R0210,earned_gross_direct,25
+HDI Global SE,2024,S.05.01.02,C0090,Kredit- und Kautionsversicherung,Credit and suretyship,direct_prop,R0220,earned_gross_prop_re,0
+HDI Global SE,2024,S.05.01.02,C0090,Kredit- und Kautionsversicherung,Credit and suretyship,direct_prop,R0240,earned_reinsurers_share,0
+HDI Global SE,2024,S.05.01.02,C0090,Kredit- und Kautionsversicherung,Credit and suretyship,direct_prop,R0300,earned_net,25
+HDI Global SE,2024,S.05.01.02,C0090,Kredit- und Kautionsversicherung,Credit and suretyship,direct_prop,R0310,claims_gross_direct,16
+HDI Global SE,2024,S.05.01.02,C0090,Kredit- und Kautionsversicherung,Credit and suretyship,direct_prop,R0320,claims_gross_prop_re,9
+HDI Global SE,2024,S.05.01.02,C0090,Kredit- und Kautionsversicherung,Credit and suretyship,direct_prop,R0340,claims_reinsurers_share,0
+HDI Global SE,2024,S.05.01.02,C0090,Kredit- und Kautionsversicherung,Credit and suretyship,direct_prop,R0400,claims_net,25
+HDI Global SE,2024,S.05.01.02,C0090,Kredit- und Kautionsversicherung,Credit and suretyship,direct_prop,R0550,expenses_incurred,133
+HDI Global SE,2024,S.05.01.02,C0100,Rechtsschutzversicherung,Legal expenses,direct_prop,R0110,written_gross_direct,24154
+HDI Global SE,2024,S.05.01.02,C0100,Rechtsschutzversicherung,Legal expenses,direct_prop,R0120,written_gross_prop_re,373
+HDI Global SE,2024,S.05.01.02,C0100,Rechtsschutzversicherung,Legal expenses,direct_prop,R0140,written_reinsurers_share,24092
+HDI Global SE,2024,S.05.01.02,C0100,Rechtsschutzversicherung,Legal expenses,direct_prop,R0200,written_net,434
+HDI Global SE,2024,S.05.01.02,C0100,Rechtsschutzversicherung,Legal expenses,direct_prop,R0210,earned_gross_direct,24214
+HDI Global SE,2024,S.05.01.02,C0100,Rechtsschutzversicherung,Legal expenses,direct_prop,R0220,earned_gross_prop_re,334
+HDI Global SE,2024,S.05.01.02,C0100,Rechtsschutzversicherung,Legal expenses,direct_prop,R0240,earned_reinsurers_share,24171
+HDI Global SE,2024,S.05.01.02,C0100,Rechtsschutzversicherung,Legal expenses,direct_prop,R0300,earned_net,378
+HDI Global SE,2024,S.05.01.02,C0100,Rechtsschutzversicherung,Legal expenses,direct_prop,R0310,claims_gross_direct,9920
+HDI Global SE,2024,S.05.01.02,C0100,Rechtsschutzversicherung,Legal expenses,direct_prop,R0320,claims_gross_prop_re,261
+HDI Global SE,2024,S.05.01.02,C0100,Rechtsschutzversicherung,Legal expenses,direct_prop,R0340,claims_reinsurers_share,7968
+HDI Global SE,2024,S.05.01.02,C0100,Rechtsschutzversicherung,Legal expenses,direct_prop,R0400,claims_net,2213
+HDI Global SE,2024,S.05.01.02,C0100,Rechtsschutzversicherung,Legal expenses,direct_prop,R0550,expenses_incurred,3361
+HDI Global SE,2024,S.05.01.02,C0200,Gesamt,Total,total,R0110,written_gross_direct,4650012
+HDI Global SE,2024,S.05.01.02,C0200,Gesamt,Total,total,R0120,written_gross_prop_re,2542996
+HDI Global SE,2024,S.05.01.02,C0200,Gesamt,Total,total,R0140,written_reinsurers_share,4674798
+HDI Global SE,2024,S.05.01.02,C0200,Gesamt,Total,total,R0200,written_net,2518211
+HDI Global SE,2024,S.05.01.02,C0200,Gesamt,Total,total,R0210,earned_gross_direct,4523728
+HDI Global SE,2024,S.05.01.02,C0200,Gesamt,Total,total,R0220,earned_gross_prop_re,2430540
+HDI Global SE,2024,S.05.01.02,C0200,Gesamt,Total,total,R0240,earned_reinsurers_share,4523289
+HDI Global SE,2024,S.05.01.02,C0200,Gesamt,Total,total,R0300,earned_net,2430979
+HDI Global SE,2024,S.05.01.02,C0200,Gesamt,Total,total,R0310,claims_gross_direct,2846109
+HDI Global SE,2024,S.05.01.02,C0200,Gesamt,Total,total,R0320,claims_gross_prop_re,1337976
+HDI Global SE,2024,S.05.01.02,C0200,Gesamt,Total,total,R0340,claims_reinsurers_share,2582272
+HDI Global SE,2024,S.05.01.02,C0200,Gesamt,Total,total,R0400,claims_net,1601814
+HDI Global SE,2024,S.05.01.02,C0200,Gesamt,Total,total,R0550,expenses_incurred,1774727
+HDI Global SE,2024,S.05.01.02,C0200,Gesamt,Total,total,R1300,total_expenses,1774727
