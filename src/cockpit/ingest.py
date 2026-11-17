@@ -27,7 +27,27 @@ RAW_COLUMNS: dict[str, str] = {
     "value_teur": "DECIMAL(18, 3)",
 }
 
-REFERENCE_FILES = ("lob_groups.csv", "insurers.csv", "dq_reference_values.csv")
+REFERENCE_FILES = (
+    "lob_groups.csv",
+    "insurers.csv",
+    "dq_reference_values.csv",
+    "market_lob_gdv.csv",
+)
+
+# FR-1.23: layout of the hand-maintained GDV file, and the loss ratio types it may name.
+GDV_COLUMNS = (
+    "year",
+    "line_group",
+    "gdv_line",
+    "loss_ratio_pct",
+    "ratio_type",
+    "basis",
+    "source",
+    "source_table",
+    "source_page",
+)
+GDV_RATIO_TYPES = ("balance_sheet", "current_year")
+GDV_MAX_ERRORS_SHOWN = 10
 
 _COLUMN_SPEC = ", ".join(f"'{name}': '{dtype}'" for name, dtype in RAW_COLUMNS.items())
 
@@ -325,6 +345,73 @@ def load_eiopa(con: duckdb.DuckDBPyConnection, paths: Paths) -> EiopaResult:
     return EiopaResult(source_file=source, rows_in_table=rows_in_table, loaded=needs_load)
 
 
+def _is_number(text: str) -> bool:
+    try:
+        float(text)
+    except ValueError:
+        return False
+    return True
+
+
+def validate_market_lob_gdv(path: Path, line_groups: set[str]) -> None:
+    """Check the format of the GDV file; stop with every problem and its line number."""
+    with path.open(encoding="utf-8-sig", newline="") as handle:
+        reader = csv.reader(handle)
+        header = next(reader, None) or []
+        if tuple(header) != GDV_COLUMNS:
+            raise IngestError(
+                f"{path.name}: header does not match the expected layout.\n"
+                f"  expected: {','.join(GDV_COLUMNS)}\n"
+                f"  found:    {','.join(header)}"
+            )
+        rows = [(number, row) for number, row in enumerate(reader, start=2) if row]
+
+    problems: list[str] = []
+    seen: dict[tuple[str, str], int] = {}
+    for number, row in rows:
+        if len(row) != len(GDV_COLUMNS):
+            problems.append(f"line {number}: {len(row)} values, expected {len(GDV_COLUMNS)}")
+            continue
+        value = {name: text.strip() for name, text in zip(GDV_COLUMNS, row, strict=True)}
+        for name in GDV_COLUMNS:
+            if not value[name]:
+                problems.append(f"line {number}: {name} is empty")
+        if value["year"] and not (value["year"].isdigit() and len(value["year"]) == 4):
+            problems.append(f"line {number}: year '{value['year']}' is not a 4-digit year")
+        if value["line_group"] and value["line_group"] not in line_groups:
+            problems.append(
+                f"line {number}: line group '{value['line_group']}' is not in lob_groups.csv"
+            )
+        ratio = value["loss_ratio_pct"]
+        if ratio and not (_is_number(ratio) and 0 <= float(ratio) <= 300):
+            problems.append(
+                f"line {number}: loss_ratio_pct '{ratio}' is not a percentage between 0 and 300"
+            )
+        if value["ratio_type"] and value["ratio_type"] not in GDV_RATIO_TYPES:
+            problems.append(
+                f"line {number}: ratio_type '{value['ratio_type']}' is not one of "
+                f"{', '.join(GDV_RATIO_TYPES)}"
+            )
+        if value["source_page"] and not value["source_page"].isdigit():
+            problems.append(f"line {number}: source_page '{value['source_page']}' is not a number")
+        key = (value["year"], value["line_group"])
+        if all(key):
+            if key in seen:
+                problems.append(
+                    f"line {number}: {key[0]} {key[1]} already appears on line {seen[key]}"
+                )
+            seen.setdefault(key, number)
+
+    if problems:
+        shown = problems[:GDV_MAX_ERRORS_SHOWN]
+        more = len(problems) - len(shown)
+        raise IngestError(
+            f"{path.name}: {len(problems)} problem{'' if len(problems) == 1 else 's'}.\n  "
+            + "\n  ".join(shown)
+            + (f"\n  and {more} more" if more else "")
+        )
+
+
 def load_reference(con: duckdb.DuckDBPyConnection, paths: Paths) -> None:
     """Rebuild the reference tables from data/reference."""
     for name in REFERENCE_FILES:
@@ -338,3 +425,15 @@ def load_reference(con: duckdb.DuckDBPyConnection, paths: Paths) -> None:
         run_sql_file(con, paths.sql_dir / "10_raw" / "ref_dq_reference_values.sql")
     except duckdb.Error as error:
         raise IngestError(f"A reference file could not be loaded. {error}") from error
+
+    line_groups = {
+        group
+        for (group,) in con.execute(
+            "SELECT DISTINCT line_group FROM ref_lob_groups WHERE line_group <> 'Total'"
+        ).fetchall()
+    }
+    validate_market_lob_gdv(paths.reference_dir / "market_lob_gdv.csv", line_groups)
+    try:
+        run_sql_file(con, paths.sql_dir / "10_raw" / "ref_market_lob_gdv.sql")
+    except duckdb.Error as error:
+        raise IngestError(f"market_lob_gdv.csv could not be loaded. {error}") from error

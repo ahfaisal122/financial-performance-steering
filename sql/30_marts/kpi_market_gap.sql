@@ -1,6 +1,7 @@
 -- KPI: market gap = LR(company) - LR(German market), in percentage points.
--- V1: company total against the German non-life market total from EIOPA. The by-line
--- gap waits for the GDV reference file (FR-1.23).
+-- V1: company total against the German non-life market total from EIOPA. There is no
+-- by-line gap: the GDV figures in ref_market_lob_gdv are current-year loss ratios, which
+-- are not comparable with the company loss ratio (it includes the run-off of prior years).
 -- The company books are global; the benchmark is the German market only.
 -- market_status says why a gap is missing: 'ok', 'no market data' or 'no company data'.
 CREATE OR REPLACE VIEW kpi_market_gap AS

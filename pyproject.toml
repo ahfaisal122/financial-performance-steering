@@ -7,10 +7,11 @@ name = "cockpit"
 version = "0.1.0"
 description = "Financial performance steering cockpit on public Solvency II data"
 requires-python = ">=3.11"
-dependencies = ["duckdb>=1.1"]
+dependencies = ["duckdb>=1.1", "openpyxl>=3.1"]
 
 [project.optional-dependencies]
-dev = ["pytest>=8", "ruff>=0.6"]
+app = ["streamlit>=1.50"]
+dev = ["pytest>=8", "ruff>=0.6", "streamlit>=1.50"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
@@ -21,7 +22,7 @@ testpaths = ["tests"]
 [tool.ruff]
 line-length = 100
 target-version = "py311"
-src = ["src", "tests"]
+src = ["src", "tests", "app"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B"]

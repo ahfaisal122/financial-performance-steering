@@ -41,5 +41,13 @@ class Paths:
         return self.root / "data" / "reference"
 
     @property
+    def docs_dir(self) -> Path:
+        return self.root / "docs"
+
+    @property
+    def exports_dir(self) -> Path:
+        return self.root / "exports"
+
+    @property
     def warehouse(self) -> Path:
         return self.root / "warehouse" / "cockpit.duckdb"

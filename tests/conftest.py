@@ -12,7 +12,7 @@ import pytest
 
 from cockpit.config import REPO_ROOT, Paths
 from cockpit.db import connect
-from cockpit.ingest import RAW_COLUMNS
+from cockpit.ingest import GDV_COLUMNS, RAW_COLUMNS
 
 # One test row: (lob_code, row_code, value). The value is written as given, so "-" stays a dash.
 Row = tuple[str, str, object]
@@ -108,6 +108,19 @@ def write_eiopa_file(
     return path
 
 
+GDV_SOURCE = ("current_year", "gross", "GDV booklet", "IV | 79", 84)
+
+
+def write_gdv_file(paths: Paths, rows: list[tuple], header: tuple[str, ...] = GDV_COLUMNS) -> Path:
+    """Write the hand-maintained GDV file; each row is a full tuple of its nine values."""
+    path = paths.reference_dir / "market_lob_gdv.csv"
+    with path.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.writer(handle)
+        writer.writerow(header)
+        writer.writerows(rows)
+    return path
+
+
 def new_project(root: Path) -> Paths:
     """An empty project: the real line groups and insurers, no reference values, and a
     small EIOPA file with Germany, another country and a life row."""
@@ -117,6 +130,7 @@ def new_project(root: Path) -> Paths:
     for name in ("lob_groups.csv", "insurers.csv"):
         shutil.copy(REPO_ROOT / "data" / "reference" / name, paths.reference_dir)
     write_reference_values(paths, [])
+    write_gdv_file(paths, [])
     write_eiopa_file(
         paths,
         market_rows("GERMANY", 2025)

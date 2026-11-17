@@ -8,13 +8,15 @@ from decimal import Decimal
 import pytest
 
 from cockpit import pipeline
-from cockpit.ingest import IngestError, load_eiopa, load_sfcr
+from cockpit.ingest import IngestError, load_eiopa, load_reference, load_sfcr
 from conftest import (
     EIOPA_HEADER,
+    GDV_SOURCE,
     balanced_rows,
     market_rows,
     replace_value,
     write_eiopa_file,
+    write_gdv_file,
     write_sfcr_file,
 )
 
@@ -292,3 +294,100 @@ def test_eiopa_text_in_the_value_column_stops(project, open_warehouse):
 
     with pytest.raises(IngestError, match="could not be loaded"):
         load_eiopa(open_warehouse(project), project)
+
+
+# FR-1.23: the hand-maintained GDV file
+
+
+def test_real_gdv_file_passes_validation_and_loads(real_project, open_warehouse):
+    con = open_warehouse(real_project)
+    load_reference(con, real_project)
+
+    rows = con.execute(
+        "SELECT line_group, COUNT(*), MIN(year), MAX(year), MIN(ratio_type), MAX(ratio_type) "
+        "FROM ref_market_lob_gdv GROUP BY line_group ORDER BY line_group"
+    ).fetchall()
+    assert rows == [
+        ("Liability", 3, 2022, 2024, "current_year", "current_year"),
+        ("Marine, aviation and transport", 3, 2022, 2024, "current_year", "current_year"),
+        ("Property", 3, 2022, 2024, "current_year", "current_year"),
+    ]
+    # As printed: Allgemeine Haftpflichtversicherung 2024, table IV | 79, page 84.
+    assert con.execute(
+        "SELECT gdv_line, loss_ratio_pct, source_table, source_page FROM ref_market_lob_gdv "
+        "WHERE year = 2024 AND line_group = 'Liability'"
+    ).fetchone() == ("Allgemeine Haftpflichtversicherung", Decimal("64.50"), "IV | 79", 84)
+
+
+def test_gdv_file_with_only_a_header_is_valid(project, open_warehouse):
+    con = open_warehouse(project)
+    load_reference(con, project)
+
+    assert con.execute("SELECT COUNT(*) FROM ref_market_lob_gdv").fetchone() == (0,)
+
+
+def gdv_row(year=2024, line_group="Liability", gdv_line="Haftpflicht", ratio=64.5, **changes):
+    ratio_type, basis, source, table, page = GDV_SOURCE
+    row = {
+        "year": year,
+        "line_group": line_group,
+        "gdv_line": gdv_line,
+        "loss_ratio_pct": ratio,
+        "ratio_type": ratio_type,
+        "basis": basis,
+        "source": source,
+        "source_table": table,
+        "source_page": page,
+    } | changes
+    return tuple(row.values())
+
+
+@pytest.mark.parametrize(
+    ("row", "message"),
+    [
+        (gdv_row(year="24"), "line 2: year '24' is not a 4-digit year"),
+        (gdv_row(line_group="Cyber"), "line 2: line group 'Cyber' is not in lob_groups.csv"),
+        (gdv_row(line_group="Total"), "line 2: line group 'Total' is not in lob_groups.csv"),
+        (gdv_row(ratio="64,5"), "line 2: loss_ratio_pct '64,5' is not a percentage"),
+        (gdv_row(ratio=0.645 * 1000), "is not a percentage between 0 and 300"),
+        (gdv_row(ratio_type="gross"), "line 2: ratio_type 'gross' is not one of"),
+        (gdv_row(source_page=""), "line 2: source_page is empty"),
+        (gdv_row(source_page="p. 84"), "line 2: source_page 'p. 84' is not a number"),
+        (gdv_row(source_table=" "), "line 2: source_table is empty"),
+    ],
+)
+def test_gdv_file_problem_stops_with_the_line_number(project, open_warehouse, row, message):
+    write_gdv_file(project, [row])
+
+    with pytest.raises(IngestError, match="market_lob_gdv.csv: 1 problem\\.") as stopped:
+        load_reference(open_warehouse(project), project)
+    assert message in str(stopped.value)
+
+
+def test_gdv_file_duplicate_year_and_line_group_stops(project, open_warehouse):
+    write_gdv_file(project, [gdv_row(), gdv_row(gdv_line="Other name", ratio=70)])
+
+    with pytest.raises(IngestError, match="line 3: 2024 Liability already appears on line 2"):
+        load_reference(open_warehouse(project), project)
+
+
+def test_gdv_file_lists_every_problem(project, open_warehouse):
+    write_gdv_file(project, [gdv_row(year="x"), gdv_row(ratio="n/a"), (2024, "Liability")])
+
+    with pytest.raises(IngestError, match="3 problems") as stopped:
+        load_reference(open_warehouse(project), project)
+    assert "line 4: 2 values, expected 9" in str(stopped.value)
+
+
+def test_gdv_file_with_a_wrong_header_stops(project, open_warehouse):
+    write_gdv_file(project, [], header=("year", "line", "loss_ratio"))
+
+    with pytest.raises(IngestError, match="market_lob_gdv.csv: header does not match"):
+        load_reference(open_warehouse(project), project)
+
+
+def test_missing_gdv_file_stops(project, open_warehouse):
+    (project.reference_dir / "market_lob_gdv.csv").unlink()
+
+    with pytest.raises(IngestError, match="Reference file missing"):
+        load_reference(open_warehouse(project), project)

@@ -8,7 +8,7 @@ import pytest
 
 from cockpit import pipeline
 from cockpit.config import REPO_ROOT
-from cockpit.models import MART_MODELS, STAGING_MODELS, ModelError
+from cockpit.models import MODEL_FOLDERS, ModelError
 from conftest import balanced_rows, write_eiopa_file, write_sfcr_file
 
 MART_FIGURES = (
@@ -32,7 +32,7 @@ def real(real_project, open_warehouse):
 
 
 def test_every_sql_file_is_in_the_build_order():
-    for folder, models in (("20_staging", STAGING_MODELS), ("30_marts", MART_MODELS)):
+    for folder, models in MODEL_FOLDERS:
         files = {path.stem for path in (REPO_ROOT / "sql" / folder).glob("*.sql")}
         assert files == set(models), folder
         assert len(models) == len(set(models)), folder

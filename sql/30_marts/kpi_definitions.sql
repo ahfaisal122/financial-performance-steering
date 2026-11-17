@@ -39,7 +39,7 @@ FROM (
     (12, 'peer_gap', 'Peer gap', 'LR(AGCS) - LR(HDI), in points',
         'Per line', NULL, 'points', 'kpi_peer_gap', 'peer_gap_pts'),
     (13, 'market_gap', 'Market gap', 'LR(company) - LR(German market), in points',
-        'Total level from EIOPA; line level from GDV (FR-1.23, not built yet)',
+        'Total level only, from EIOPA',
         'Company books are global, the benchmark is Germany only',
         'points', 'kpi_market_gap', 'market_gap_pts')
 ) AS definitions (

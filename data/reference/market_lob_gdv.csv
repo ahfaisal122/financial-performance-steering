@@ -1,0 +1,10 @@
+year,line_group,gdv_line,loss_ratio_pct,ratio_type,basis,source,source_table,source_page
+2022,Property,Nicht-Private Sachversicherung,74.9,current_year,"gross, German direct business","GDV, Statistiken zur deutschen Versicherungswirtschaft, September 2025",IV | 76,81
+2023,Property,Nicht-Private Sachversicherung,79.5,current_year,"gross, German direct business","GDV, Statistiken zur deutschen Versicherungswirtschaft, September 2025",IV | 76,81
+2024,Property,Nicht-Private Sachversicherung,74.5,current_year,"gross, German direct business","GDV, Statistiken zur deutschen Versicherungswirtschaft, September 2025",IV | 76,81
+2022,Liability,Allgemeine Haftpflichtversicherung,61.5,current_year,"gross, German direct business","GDV, Statistiken zur deutschen Versicherungswirtschaft, September 2025",IV | 79,84
+2023,Liability,Allgemeine Haftpflichtversicherung,62.2,current_year,"gross, German direct business","GDV, Statistiken zur deutschen Versicherungswirtschaft, September 2025",IV | 79,84
+2024,Liability,Allgemeine Haftpflichtversicherung,64.5,current_year,"gross, German direct business","GDV, Statistiken zur deutschen Versicherungswirtschaft, September 2025",IV | 79,84
+2022,"Marine, aviation and transport",Transport- und Luftfahrtversicherung,59.5,current_year,"gross, German direct business","GDV, Statistiken zur deutschen Versicherungswirtschaft, September 2025",IV | 82,87
+2023,"Marine, aviation and transport",Transport- und Luftfahrtversicherung,55.9,current_year,"gross, German direct business","GDV, Statistiken zur deutschen Versicherungswirtschaft, September 2025",IV | 82,87
+2024,"Marine, aviation and transport",Transport- und Luftfahrtversicherung,57.7,current_year,"gross, German direct business","GDV, Statistiken zur deutschen Versicherungswirtschaft, September 2025",IV | 82,87

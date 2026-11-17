@@ -1,6 +1,6 @@
-"""Build the data model and the KPI views (FR-1.8 to FR-1.11).
+"""Build the data model, the KPI views and the analysis views (FR-1.8 to FR-1.16).
 
-One SQL file per model in sql/20_staging and sql/30_marts, run in the order
+One SQL file per model in sql/20_staging, sql/30_marts and sql/40_analysis, run in the order
 below: a model comes after everything it reads from. The pipeline calls this
 only after the quality gate has passed.
 """
@@ -40,18 +40,34 @@ MART_MODELS: tuple[str, ...] = (
 )
 
 
+ANALYSIS_MODELS: tuple[str, ...] = (
+    "analysis_yoy",
+    "analysis_lr_walk",
+    "analysis_rolling_avg",
+    "analysis_peer_market",
+    "analysis_flags",
+)
+
+MODEL_FOLDERS: tuple[tuple[str, tuple[str, ...]], ...] = (
+    ("20_staging", STAGING_MODELS),
+    ("30_marts", MART_MODELS),
+    ("40_analysis", ANALYSIS_MODELS),
+)
+
+
 class ModelError(Exception):
     """The model was built but breaks one of its own rules."""
 
 
 def build_marts(con: duckdb.DuckDBPyConnection, paths: Paths) -> tuple[str, ...]:
     """Build every model, then check the rules the model must keep."""
-    for name in STAGING_MODELS:
-        run_sql_file(con, paths.sql_dir / "20_staging" / f"{name}.sql")
-    for name in MART_MODELS:
-        run_sql_file(con, paths.sql_dir / "30_marts" / f"{name}.sql")
+    built: tuple[str, ...] = ()
+    for folder, models in MODEL_FOLDERS:
+        for name in models:
+            run_sql_file(con, paths.sql_dir / folder / f"{name}.sql")
+        built += models
     check_model(con)
-    return STAGING_MODELS + MART_MODELS
+    return built
 
 
 def check_model(con: duckdb.DuckDBPyConnection) -> None:
