@@ -149,7 +149,7 @@ def test_overview_cards_equal_the_sql_views(cockpit):
 
     cards = metrics(run_app())
 
-    assert cards["Gross written premium, EUR m"][0] == f"{float(gwp) / 1000:,.1f}" == "6,581.3"
+    assert cards["GWP, EUR m"][0] == f"{float(gwp) / 1000:,.1f}" == "6,581.3"
     assert cards["GWP growth"][0] == f"{growth:+.1%}"
     assert cards["Gross loss ratio"] == (f"{loss_ratio:.1%}", f"{change:+.1f} pts against 2024")
     assert cards["Ceded share"][0] == f"{ceded:.1%}"
@@ -169,7 +169,7 @@ def test_overview_follows_the_slicers(cockpit):
         "WHERE g.insurer = 'HDI Global SE' AND g.year = 2024 AND g.line_group = 'Property'"
     ).fetchone()
     cards = metrics(at)
-    assert cards["Gross written premium, EUR m"][0] == f"{float(gwp) / 1000:,.1f}"
+    assert cards["GWP, EUR m"][0] == f"{float(gwp) / 1000:,.1f}"
     assert cards["Gross loss ratio"][0] == f"{loss_ratio:.1%}"
 
 
@@ -213,7 +213,7 @@ def test_overview_line_without_figures_says_so_instead_of_showing_zero(cockpit):
     at = run_page("page_overview", "HDI Global SE", "HDI", 2022, "Financial lines")
 
     assert "reports no figures for Financial lines in 2022" in at.info[0].value
-    assert "Gross written premium, EUR m" not in metrics(at)
+    assert "GWP, EUR m" not in metrics(at)
 
 
 # Line of business

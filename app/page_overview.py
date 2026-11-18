@@ -66,7 +66,11 @@ def render(slicers: ui.Slicers) -> None:
         prior = f"against {slicers.year - 1}"
         cards = st.columns(4)
         cards[0].metric(
-            "Gross written premium, EUR m", ui.meur(row["gwp_teur"]), border=True, height="stretch"
+            "GWP, EUR m",
+            ui.meur(row["gwp_teur"]),
+            help="Gross written premium in EUR million.",
+            border=True,
+            height="stretch",
         )
         cards[1].metric(
             "GWP growth",

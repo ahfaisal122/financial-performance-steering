@@ -24,7 +24,7 @@ docs: pipeline  ## Write docs/kpi_definitions.md from the kpi_definitions table
 	$(PYTHON) -m cockpit.kpi_docs
 
 app: pipeline  ## Open the dashboard in the browser (stop it with Ctrl+C)
-	$(PYTHON) -m streamlit run app/cockpit_app.py
+	$(PYTHON) -m streamlit run app/cockpit_app.py --server.port 8510
 
 test:  ## Run the tests
 	$(PYTHON) -m pytest

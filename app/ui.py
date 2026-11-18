@@ -68,12 +68,86 @@ def sidebar_slicers() -> Slicers:
 
 
 def chart_theme() -> charts.Theme:
-    """Chart colors for the theme the viewer has on. Light when it cannot be told."""
-    try:
-        mode = st.context.theme.type
-    except Exception:
-        mode = None
-    return charts.theme_for(mode)
+    return charts.THEME
+
+
+STYLE = """
+<style>
+/* Page title: navy with a thin gold rule under it. */
+[data-testid="stMainBlockContainer"] h1 {
+    color: #12305a;
+    letter-spacing: -0.01em;
+    border-bottom: 2px solid #c9a227;
+    padding-bottom: 0.45rem;
+    margin-bottom: 0.2rem;
+}
+[data-testid="stMainBlockContainer"] h2,
+[data-testid="stMainBlockContainer"] h3 {
+    color: #12305a;
+}
+/* KPI cards: white, hairline border, navy top edge, small uppercase label. */
+[data-testid="stMetric"] {
+    background: #ffffff;
+    border: 1px solid #dde3ea;
+    border-top: 3px solid #12305a;
+    border-radius: 4px;
+    padding: 0.85rem 1rem 0.9rem 1rem;
+    box-shadow: 0 1px 2px rgba(18, 48, 90, 0.06);
+}
+[data-testid="stMetricLabel"] p {
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #5a6678;
+}
+[data-testid="stMetricValue"] {
+    color: #12305a;
+}
+/* Tables: aligned figures. */
+[data-testid="stDataFrame"] {
+    font-variant-numeric: tabular-nums;
+}
+/* Expanders and bordered containers: the same hairline as the cards. */
+[data-testid="stExpander"] details {
+    border-color: #dde3ea;
+    border-radius: 4px;
+}
+/* Sidebar brand block. */
+.cockpit-brand {
+    padding: 0.2rem 0 1.1rem 0;
+    margin-bottom: 0.6rem;
+    border-bottom: 1px solid #2c4c78;
+}
+.cockpit-brand .name {
+    color: #d4af37;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+.cockpit-brand .scope {
+    color: #b8c6d9;
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+    line-height: 1.35;
+}
+</style>
+"""
+
+BRAND = """
+<div class="cockpit-brand">
+  <div class="name">Steering cockpit</div>
+  <div class="scope">Commercial P&amp;C · Solvency II S.05.01.02 · HGB basis</div>
+</div>
+"""
+
+
+def apply_style() -> None:
+    """The institutional look on top of the theme in .streamlit/config.toml."""
+    st.html(STYLE)
+    with st.sidebar:
+        st.html(BRAND)
 
 
 # Number formats. A missing value is shown as "n/a", never as zero.

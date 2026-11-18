@@ -26,6 +26,7 @@ if not queries.warehouse_exists():
     )
     st.stop()
 
+ui.apply_style()
 slicers = ui.sidebar_slicers()
 
 page = st.navigation(
@@ -55,7 +56,8 @@ page = st.navigation(
             icon=":material/fact_check:",
             url_path="data-quality",
         ),
-    ]
+    ],
+    position="top",
 )
 page.run()
 ui.footer()

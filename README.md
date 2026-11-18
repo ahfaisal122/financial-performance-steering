@@ -32,7 +32,7 @@ You need Python 3.11 or newer and `make`.
 4. Open the dashboard: `make app`
 5. Run the tests: `make test`
 
-`make app` starts the dashboard and opens it in your browser at `http://localhost:8501`. Press Ctrl+C in the terminal to stop it.
+`make app` starts the dashboard and opens it in your browser at `http://localhost:8510`. Press Ctrl+C in the terminal to stop it; Ctrl+Z only pauses it and keeps the port busy.
 
 `make setup` uses `python3.12`. If your Python has another name, pass it: `make setup BOOTSTRAP_PYTHON=python3.11`.
 
@@ -66,7 +66,7 @@ python3.12 -m venv .venv
 .venv/bin/python -m cockpit.pipeline
 .venv/bin/python -m cockpit.export_excel
 .venv/bin/python -m cockpit.kpi_docs
-.venv/bin/python -m streamlit run app/cockpit_app.py
+.venv/bin/python -m streamlit run app/cockpit_app.py --server.port 8510
 .venv/bin/python -m pytest
 ```
 

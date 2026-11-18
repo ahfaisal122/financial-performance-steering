@@ -1,9 +1,9 @@
 """Charts of the dashboard, built with Altair.
 
-One palette for every chart. A line group or company keeps its color on every
-page and under every filter. Colors were checked for colorblind safety in both
-light and dark mode; three light-mode colors have low contrast against the
-surface, which is why every chart has a table view below it.
+One palette for every chart, in the navy-and-gold look of the app. A line group or
+company keeps its color on every page and under every filter. The colors were checked
+for colorblind safety on the white page. The gold has low contrast against white,
+which is why every chart has its numbers in a table below it.
 """
 
 from __future__ import annotations
@@ -15,7 +15,7 @@ import pandas as pd
 
 from queries import LINE_GROUPS
 
-FONT = 'system-ui, -apple-system, "Segoe UI", sans-serif'
+FONT = '-apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", Arial, sans-serif'
 
 
 @dataclass(frozen=True)
@@ -32,35 +32,19 @@ class Theme:
     neutral: str  # context series, such as the 3-year average
 
 
-LIGHT = Theme(
-    surface="#fcfcfb",
-    ink="#0b0b0b",
-    ink_secondary="#52514e",
-    ink_muted="#898781",
-    grid="#e1e0d9",
-    axis="#c3c2b7",
-    categorical=("#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300"),
-    lowers="#2a78d6",
-    raises="#e34948",
-    neutral="#898781",
+THEME = Theme(
+    surface="#ffffff",
+    ink="#12305a",
+    ink_secondary="#3b4757",
+    ink_muted="#6b778a",
+    grid="#e8ecf1",
+    axis="#c9d1db",
+    # navy, gold, teal, burgundy, violet, green
+    categorical=("#2a5fa8", "#d08a12", "#109a8c", "#b8365c", "#8a63c8", "#4a8f20"),
+    lowers="#2a5fa8",
+    raises="#b8365c",
+    neutral="#8a94a6",
 )
-
-DARK = Theme(
-    surface="#1a1a19",
-    ink="#f0efec",
-    ink_secondary="#c3c2b7",
-    ink_muted="#898781",
-    grid="#2c2c2a",
-    axis="#383835",
-    categorical=("#3987e5", "#d95926", "#199e70", "#c98500", "#d55181", "#0ca30c"),
-    lowers="#3987e5",
-    raises="#e66767",
-    neutral="#898781",
-)
-
-
-def theme_for(mode: str | None) -> Theme:
-    return DARK if mode == "dark" else LIGHT
 
 
 def _finish(chart: alt.TopLevelMixin, theme: Theme) -> alt.TopLevelMixin:

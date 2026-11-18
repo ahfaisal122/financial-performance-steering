@@ -1,0 +1,44 @@
+# Look and port of the Streamlit dashboard. Read when the app is started from the repo root.
+
+[server]
+port = 8510
+
+[client]
+# Hide the "Deploy" button and the developer menu entries.
+toolbarMode = "viewer"
+
+[browser]
+gatherUsageStats = false
+
+[theme]
+# Light institutional look: white page, navy accents, slate text, a navy sidebar.
+base = "light"
+primaryColor = "#12305a"
+backgroundColor = "#ffffff"
+secondaryBackgroundColor = "#f4f6f9"
+textColor = "#1a2433"
+linkColor = "#2a5fa8"
+borderColor = "#dde3ea"
+dataframeBorderColor = "#e3e8ee"
+dataframeHeaderBackgroundColor = "#f4f6f9"
+dataframeHeaderTextColor = "#3b4757"
+showWidgetBorder = true
+baseRadius = "small"
+font = "-apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Segoe UI', Arial, sans-serif"
+headingFont = "-apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Segoe UI', Arial, sans-serif"
+headingFontWeights = [650, 600, 600]
+headingFontSizes = ["2.1rem", "1.35rem", "1.1rem"]
+metricValueFontWeight = 600
+# Better and worse in the KPI deltas.
+greenColor = "#1e7a46"
+redColor = "#b8365c"
+blueColor = "#2a5fa8"
+orangeColor = "#b8761b"
+chartCategoricalColors = ["#2a5fa8", "#d08a12", "#109a8c", "#b8365c", "#8a63c8", "#4a8f20"]
+
+[theme.sidebar]
+backgroundColor = "#0f2747"
+secondaryBackgroundColor = "#1a3a63"
+textColor = "#e8eef6"
+borderColor = "#2c4c78"
+primaryColor = "#d4af37"
