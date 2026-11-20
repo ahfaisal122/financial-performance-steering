@@ -238,55 +238,6 @@ def _series_scale(series: list[str], theme: Theme) -> alt.Scale:
     return alt.Scale(domain=series, range=list(theme.categorical[: len(series)]))
 
 
-def peer_market_bars(
-    long: pd.DataFrame, series: list[str], rows: list[str], theme: Theme
-) -> alt.TopLevelMixin:
-    """Gross loss ratio per line group, one bar per company and one for the market.
-
-    `long` has line_group, series, ratio and label (the value as text, or the reason
-    why there is none).
-    """
-    y = alt.Y("line_group:N", sort=rows, title=None, axis=alt.Axis(labelLimit=240, ticks=False))
-    offset = alt.YOffset("series:N", sort=series)
-    present = long.dropna(subset=["ratio"])
-    low = min(0.0, float(present["ratio"].min()))
-    # Room on the right for the value labels; the axis always includes zero.
-    x_scale = alt.Scale(domain=[low, float(present["ratio"].max()) * 1.12], nice=True, zero=True)
-    bars = (
-        alt.Chart(present)
-        .mark_bar(cornerRadiusEnd=4)
-        .encode(
-            y=y,
-            yOffset=offset,
-            x=alt.X(
-                "ratio:Q",
-                title="Gross loss ratio",
-                scale=x_scale,
-                axis=alt.Axis(format=".0%", tickCount=6),
-            ),
-            color=alt.Color("series:N", scale=_series_scale(series, theme)),
-            tooltip=[
-                alt.Tooltip("line_group:N", title="Line group"),
-                alt.Tooltip("series:N", title="Series"),
-                alt.Tooltip("ratio:Q", title="Gross loss ratio", format=".1%"),
-            ],
-        )
-    )
-    baseline = (
-        alt.Chart(pd.DataFrame({"zero": [0.0]}))
-        .mark_rule(color=theme.axis, strokeWidth=1)
-        .encode(x=alt.X("zero:Q", scale=x_scale))
-    )
-    labels = (
-        alt.Chart(long)
-        .transform_calculate(tip="isValid(datum.ratio) ? max(datum.ratio, 0) : 0")
-        .mark_text(align="left", dx=5, fontSize=11, color=theme.ink_secondary)
-        .encode(y=y, yOffset=offset, x=alt.X("tip:Q", scale=x_scale), text="label:N")
-    )
-    chart = (baseline + bars + labels).properties(height=alt.Step(17))
-    return _finish(chart, theme)
-
-
 def total_trend_lines(long: pd.DataFrame, series: list[str], theme: Theme) -> alt.TopLevelMixin:
     """Total gross loss ratio over the years: the two companies and the market."""
     last_year = long["year"].max()
@@ -317,4 +268,276 @@ def total_trend_lines(long: pd.DataFrame, series: list[str], theme: Theme) -> al
         )
     )
     chart = (lines + points + end_labels).properties(height=260)
+    return _finish(chart, theme)
+
+
+def movers_bars(movers: pd.DataFrame, theme: Theme) -> alt.TopLevelMixin:
+    """The line groups whose loss ratio moved most, ranked, one bar per move from zero.
+
+    `movers` has line_group, gross_loss_ratio_prior, gross_loss_ratio and
+    loss_ratio_change_pts. A bar to the right raised the loss ratio (worse).
+    """
+    data = movers.copy()
+    data["change"] = data["loss_ratio_change_pts"].astype(float)
+    data["kind"] = data["change"].map(lambda v: "raises" if v >= 0 else "lowers")
+    data["label"] = [
+        f"{'▲' if c >= 0 else '▼'} {c:+.1f} pts  ({p:.1%} → {n:.1%})"
+        for c, p, n in zip(
+            data["change"], data["gross_loss_ratio_prior"], data["gross_loss_ratio"], strict=True
+        )
+    ]
+    order = data["line_group"].tolist()
+    reach = max(abs(data["change"].min()), abs(data["change"].max()), 1.0)
+    # Room for the label on the side the bar points to.
+    x_scale = alt.Scale(domain=[-reach * 1.8, reach * 1.8], nice=False)
+    y = alt.Y("line_group:N", sort=order, title=None, axis=alt.Axis(labelLimit=260, ticks=False))
+    color = alt.Color(
+        "kind:N",
+        scale=alt.Scale(domain=["raises", "lowers"], range=[theme.raises, theme.lowers]),
+        legend=alt.Legend(
+            labelExpr="datum.value == 'raises' ? 'Loss ratio up (worse)' "
+            ": 'Loss ratio down (better)'"
+        ),
+    )
+    tooltip = [
+        alt.Tooltip("line_group:N", title="Line group"),
+        alt.Tooltip("label:N", title="Move"),
+    ]
+    bars = (
+        alt.Chart(data)
+        .mark_bar(size=22, cornerRadiusEnd=4)
+        .encode(
+            y=y,
+            x=alt.X(
+                "change:Q",
+                scale=x_scale,
+                title="Change in gross loss ratio, percentage points",
+                axis=alt.Axis(format="+.0f", tickCount=6),
+            ),
+            color=color,
+            tooltip=tooltip,
+        )
+    )
+    zero = (
+        alt.Chart(pd.DataFrame({"zero": [0.0]}))
+        .mark_rule(color=theme.axis, strokeWidth=1)
+        .encode(x=alt.X("zero:Q", scale=x_scale))
+    )
+    right = (
+        alt.Chart(data[data["change"] >= 0])
+        .mark_text(align="left", dx=6, fontSize=12, fontWeight="bold", color=theme.ink)
+        .encode(y=y, x=alt.X("change:Q", scale=x_scale), text="label:N")
+    )
+    left = (
+        alt.Chart(data[data["change"] < 0])
+        .mark_text(align="right", dx=-6, fontSize=12, fontWeight="bold", color=theme.ink)
+        .encode(y=y, x=alt.X("change:Q", scale=x_scale), text="label:N")
+    )
+    chart = (zero + bars + right + left).properties(height=alt.Step(44))
+    return _finish(chart, theme)
+
+
+# One hue from light to dark, for magnitude: the higher the loss ratio, the darker the cell.
+SEQUENTIAL = ("#e8eff8", "#bcd0ea", "#86a9d6", "#4f7dbd", "#2a5fa8", "#12305a")
+
+
+def loss_ratio_heatmap(trend: pd.DataFrame, theme: Theme) -> alt.TopLevelMixin:
+    """Gross loss ratio per line group and year, the value written in each cell."""
+    data = trend.dropna(subset=["gross_loss_ratio"]).copy()
+    data["ratio"] = data["gross_loss_ratio"].astype(float)
+    groups = [group for group in LINE_GROUPS if group in set(data["line_group"])]
+    low, high = float(data["ratio"].min()), float(data["ratio"].max())
+    middle = low + (high - low) * 0.55
+    y = alt.Y("line_group:N", sort=groups, title=None, axis=alt.Axis(labelLimit=260, ticks=False))
+    x = alt.X("year:O", title=None, axis=alt.Axis(labelAngle=0, orient="top", ticks=False))
+    cells = (
+        alt.Chart(data)
+        .mark_rect(cornerRadius=3, stroke=theme.surface, strokeWidth=3)
+        .encode(
+            x=x,
+            y=y,
+            color=alt.Color(
+                "ratio:Q",
+                scale=alt.Scale(domain=[low, high], range=list(SEQUENTIAL)),
+                legend=alt.Legend(
+                    title="Gross loss ratio", format=".0%", orient="right", gradientLength=160
+                ),
+            ),
+            tooltip=[
+                alt.Tooltip("line_group:N", title="Line group"),
+                alt.Tooltip("year:O", title="Year"),
+                alt.Tooltip("ratio:Q", title="Gross loss ratio", format=".1%"),
+                alt.Tooltip("loss_ratio_3y_avg:Q", title="3-year average", format=".1%"),
+            ],
+        )
+    )
+    text = (
+        alt.Chart(data)
+        .mark_text(fontSize=13, fontWeight="bold")
+        .encode(
+            x=x,
+            y=y,
+            text=alt.Text("ratio:Q", format=".1%"),
+            color=alt.condition(
+                alt.datum.ratio > middle, alt.value("#ffffff"), alt.value(theme.ink)
+            ),
+        )
+    )
+    chart = (cells + text).properties(height=alt.Step(44), width=alt.Step(110))
+    return _finish(chart, theme).configure_legend(orient="right", title=None)
+
+
+def peer_dumbbell(rows: pd.DataFrame, focus: str, peer: str, theme: Theme) -> alt.TopLevelMixin:
+    """Focus company and peer per line group: two dots joined by a line, the gap at the end.
+
+    `rows` has line_group, focus_loss_ratio, peer_loss_ratio, peer_gap_pts, peer_status,
+    market_loss_ratio. The market appears on the total row only, as a grey diamond.
+    """
+    order = rows["line_group"].tolist()
+    wide = rows.copy()
+    for column in ("focus_loss_ratio", "peer_loss_ratio", "market_loss_ratio", "peer_gap_pts"):
+        wide[column] = wide[column].astype(float)
+    wide["gap_label"] = [
+        (f"▼ {gap:+.1f} pts, lower" if gap < 0 else f"▲ {gap:+.1f} pts, higher")
+        if status == "ok"
+        else "no peer data"
+        for gap, status in zip(wide["peer_gap_pts"], wide["peer_status"], strict=True)
+    ]
+    # The gap label sits right of the rightmost mark of the row, market diamond included.
+    wide["label_at"] = wide[["focus_loss_ratio", "peer_loss_ratio", "market_loss_ratio"]].max(
+        axis=1
+    )
+    dots = pd.concat(
+        [
+            pd.DataFrame(
+                {
+                    "line_group": wide["line_group"],
+                    "series": focus,
+                    "ratio": wide["focus_loss_ratio"],
+                }
+            ),
+            pd.DataFrame(
+                {"line_group": wide["line_group"], "series": peer, "ratio": wide["peer_loss_ratio"]}
+            ),
+            pd.DataFrame(
+                {
+                    "line_group": wide["line_group"],
+                    "series": "German market",
+                    "ratio": wide["market_loss_ratio"],
+                }
+            ),
+        ]
+    ).dropna(subset=["ratio"])
+    series = [name for name in (focus, peer, "German market") if name in set(dots["series"])]
+    high = float(dots["ratio"].max())
+    low = float(dots["ratio"].min())
+    pad = (high - low) * 0.25 + 0.02
+    x_scale = alt.Scale(domain=[min(0.0, low - pad), high + pad * 1.6], nice=False, zero=False)
+    y = alt.Y("line_group:N", sort=order, title=None, axis=alt.Axis(labelLimit=260, ticks=False))
+    links = (
+        alt.Chart(wide.dropna(subset=["focus_loss_ratio", "peer_loss_ratio"]))
+        .mark_rule(strokeWidth=4, strokeCap="round", color=theme.axis)
+        .encode(
+            y=y,
+            x=alt.X(
+                "focus_loss_ratio:Q",
+                scale=x_scale,
+                title="Gross loss ratio",
+                axis=alt.Axis(format=".0%", tickCount=6),
+            ),
+            x2="peer_loss_ratio:Q",
+        )
+    )
+    palette = {
+        focus: theme.categorical[0],
+        peer: theme.categorical[1],
+        "German market": theme.neutral,
+    }
+    points = (
+        alt.Chart(dots)
+        .mark_point(filled=True, opacity=1, size=200, stroke=theme.surface, strokeWidth=2)
+        .encode(
+            y=y,
+            x=alt.X("ratio:Q", scale=x_scale),
+            color=alt.Color(
+                "series:N",
+                scale=alt.Scale(domain=series, range=[palette[name] for name in series]),
+                legend=alt.Legend(title=None),
+            ),
+            shape=alt.Shape(
+                "series:N",
+                scale=alt.Scale(
+                    domain=series,
+                    range=["circle" if name != "German market" else "diamond" for name in series],
+                ),
+                legend=None,
+            ),
+            tooltip=[
+                alt.Tooltip("line_group:N", title="Line group"),
+                alt.Tooltip("series:N", title="Series"),
+                alt.Tooltip("ratio:Q", title="Gross loss ratio", format=".1%"),
+            ],
+        )
+    )
+    gaps = (
+        alt.Chart(wide.dropna(subset=["label_at"]))
+        .mark_text(align="left", dx=14, fontSize=12, fontWeight="bold", color=theme.ink)
+        .encode(y=y, x=alt.X("label_at:Q", scale=x_scale), text="gap_label:N")
+    )
+    chart = (links + points + gaps).properties(height=alt.Step(42))
+    return _finish(chart, theme)
+
+
+def market_bullet(bullet: pd.DataFrame, market: float, theme: Theme) -> alt.TopLevelMixin:
+    """Each company's total loss ratio as a bar, the German market as a dark line across.
+
+    `bullet` has series and ratio, in display order.
+    """
+    data = bullet.copy()
+    data["ratio"] = data["ratio"].astype(float)
+    order = data["series"].tolist()
+    top = max(float(data["ratio"].max()), market) * 1.18
+    x_scale = alt.Scale(domain=[0, top], nice=False)
+    y = alt.Y(
+        "series:N", sort=order, title=None, axis=alt.Axis(ticks=False, labelFontWeight="bold")
+    )
+    bars = (
+        alt.Chart(data)
+        .mark_bar(size=26, cornerRadiusEnd=4)
+        .encode(
+            y=y,
+            x=alt.X(
+                "ratio:Q",
+                scale=x_scale,
+                title="Total gross loss ratio",
+                axis=alt.Axis(format=".0%", tickCount=6),
+            ),
+            color=alt.Color(
+                "series:N",
+                scale=alt.Scale(domain=order, range=list(theme.categorical[: len(order)])),
+                legend=None,
+            ),
+            tooltip=[
+                alt.Tooltip("series:N", title="Company"),
+                alt.Tooltip("ratio:Q", title="Gross loss ratio", format=".1%"),
+            ],
+        )
+    )
+    values = (
+        alt.Chart(data)
+        .mark_text(align="left", dx=6, fontSize=13, fontWeight="bold", color=theme.ink)
+        .encode(y=y, x=alt.X("ratio:Q", scale=x_scale), text=alt.Text("ratio:Q", format=".1%"))
+    )
+    line = pd.DataFrame({"market": [market], "label": [f"German market {market:.1%}"]})
+    rule = (
+        alt.Chart(line)
+        .mark_rule(color=theme.ink, strokeWidth=2, strokeDash=[6, 3])
+        .encode(x=alt.X("market:Q", scale=x_scale))
+    )
+    rule_label = (
+        alt.Chart(line)
+        .mark_text(align="center", dy=-8, fontSize=12, color=theme.ink_secondary)
+        .encode(x=alt.X("market:Q", scale=x_scale), y=alt.value(0), text="label:N")
+    )
+    chart = (bars + values + rule + rule_label).properties(height=alt.Step(48))
     return _finish(chart, theme)

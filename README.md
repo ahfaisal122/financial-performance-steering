@@ -18,7 +18,7 @@ Version 1 is in progress.
 | --- | --- |
 | Ingestion, quality gate, data model, KPIs, analysis views | Built and tested |
 | Excel export with live formulas | Built and tested |
-| Dashboard, four pages, in Streamlit | Built and tested |
+| Dashboard, five pages, in Streamlit | Built and tested |
 | Dashboard in Power BI Desktop | Planned; it will read the same SQL views |
 | AI commentary, Ask your P&L, EMT deck | Version 2 |
 
@@ -74,17 +74,23 @@ To query the results yourself, open `warehouse/cockpit.duckdb` with any DuckDB c
 
 ## The dashboard
 
-Four pages, one set of filters (insurer, year, line group) in the sidebar. The dashboard calculates nothing: every number on a page is a number in a SQL view. Each page ends with the accounting basis note.
+Five pages, one set of filters (insurer, year, line group) in the sidebar. The dashboard calculates nothing: every number on a page is a number in a SQL view. Each page opens with one headline sentence that puts those numbers into words, so the page can be presented by reading it, and ends with the accounting basis note.
 
-**Overview.** Premium, growth, loss ratio and ceded share; why the loss ratio moved; the three line groups that moved most.
+A navy band over every page carries the key figures of the selection: premium, loss ratio, ceded share, the German market and the peer. The **Presentation mode** switch in the sidebar hides the method notes and the detail tables and enlarges the headlines, for a shared screen.
+
+**Executive summary.** The three questions on one screen. How did we do: four KPI tiles, each with its trend since 2022 and the peer's figure. Why: the loss ratio walk in rate and mix. What to look at: one callout per line group flagged by the fixed rules of `analysis_flags`.
+
+![Executive summary page](docs/screenshots/summary.png)
+
+**Overview.** The KPI tiles; the loss ratio walk per line group, with the largest effect marked; the three line groups whose loss ratio moved most, as a ranked chart.
 
 ![Overview page](docs/screenshots/overview.png)
 
-**Line of business.** Loss ratio against its 3-year average, premium and mix share per line group.
+**Line of business.** A heatmap of the loss ratio by line group and year; the loss ratio against its 3-year average; premium and mix share per line group.
 
 ![Line of business page](docs/screenshots/line-of-business.png)
 
-**Peer and market.** The focus company against the peer per line group, and both against the German market in total.
+**Peer and market.** The focus company against the peer per line group as a dumbbell chart with the gap at the end of each row, and both against the German market in total.
 
 ![Peer and market page](docs/screenshots/peer-and-market.png)
 
@@ -176,7 +182,7 @@ data/raw/eiopa/       the EIOPA download, untouched
 data/reference/       hand-kept files: line groups, insurers, reference values, GDV ratios
 sql/                  one file per table or view, by layer
 src/cockpit/          ingest, quality, models, pipeline, export_excel, kpi_docs
-app/                  the Streamlit dashboard: one file per page, queries, charts
+app/                  the Streamlit dashboard: one file per page, queries, charts, headline sentences
 tests/                pytest: every quality check and every KPI against hand-calculated values
 docs/                 kpi_definitions.md, screenshots
 .github/workflows/    lint, tests and a pipeline run on every push

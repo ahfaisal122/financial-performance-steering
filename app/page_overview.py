@@ -7,6 +7,7 @@ import streamlit as st
 
 import charts
 import queries
+import story
 import ui
 
 
@@ -30,6 +31,7 @@ def _walk_steps(walk: pd.DataFrame, year: int) -> pd.DataFrame:
         if group in lines.index
     ]
     effects.append(("Mix: all line groups", float(total["mix_effect_pts"])))
+    largest = max(effects, key=lambda item: abs(item[1]))[0] if effects else None
     for label, effect in effects:
         steps.append(
             {
@@ -37,7 +39,8 @@ def _walk_steps(walk: pd.DataFrame, year: int) -> pd.DataFrame:
                 "start": position,
                 "end": position + effect,
                 "kind": "raises" if effect >= 0 else "lowers",
-                "text": f"{effect:+.2f} pts",
+                "text": f"{effect:+.2f} pts"
+                + ("  ◀ largest effect" if label == largest and effect else ""),
             }
         )
         position += effect
@@ -59,47 +62,15 @@ def render(slicers: ui.Slicers) -> None:
     st.caption(f"{slicers.insurer} · {slicers.year} · {slicers.level_label}")
 
     headline = queries.headline(slicers.insurer, slicers.year, slicers.level)
+    walk = queries.lr_walk(slicers.insurer, slicers.year)
+    driver = story.biggest_driver(walk) if slicers.line_group is None else None
     if headline.empty:
         st.info(f"{slicers.insurer} reports no figures for {slicers.level} in {slicers.year}.")
     else:
-        row = headline.iloc[0]
-        prior = f"against {slicers.year - 1}"
-        cards = st.columns(4)
-        cards[0].metric(
-            "GWP, EUR m",
-            ui.meur(row["gwp_teur"]),
-            help="Gross written premium in EUR million.",
-            border=True,
-            height="stretch",
-        )
-        cards[1].metric(
-            "GWP growth",
-            ui.signed_pct(row["gwp_growth"]),
-            help=f"Gross written premium {prior}. HGB basis, currency effects included.",
-            border=True,
-            height="stretch",
-        )
-        cards[2].metric(
-            "Gross loss ratio",
-            ui.pct(row["gross_loss_ratio"]),
-            delta=None
-            if ui.missing(row["loss_ratio_change_pts"])
-            else f"{ui.pts(row['loss_ratio_change_pts'])} {prior}",
-            delta_color="inverse",
-            help="Gross claims incurred over gross earned premium. Lower is better.",
-            border=True,
-            height="stretch",
-        )
-        cards[3].metric(
-            "Ceded share",
-            ui.pct(row["ceded_share"]),
-            help="Reinsurers' share of gross written premium.",
-            border=True,
-            height="stretch",
-        )
+        ui.headline(story.performance(slicers.insurer, slicers.year, headline.iloc[0], driver))
+        ui.kpi_cards(slicers, headline.iloc[0])
 
-    st.subheader("Why the loss ratio moved")
-    walk = queries.lr_walk(slicers.insurer, slicers.year)
+    ui.section("Why", "Why the loss ratio moved")
     if walk.empty:
         st.info(f"No walk for {slicers.year}: there is no prior year to compare with.")
     else:
@@ -116,7 +87,7 @@ def render(slicers: ui.Slicers) -> None:
         st.altair_chart(
             charts.waterfall(_walk_steps(walk, slicers.year), ui.chart_theme()), width="stretch"
         )
-        st.caption("The walk always shows the whole company; the line group filter does not apply.")
+        ui.note("The walk always shows the whole company; the line group filter does not apply.")
         detail = walk.assign(
             order=walk["line_group"].map(
                 {group: i for i, group in enumerate((*queries.LINE_GROUPS, queries.TOTAL))}
@@ -135,22 +106,24 @@ def render(slicers: ui.Slicers) -> None:
             )
         )
 
-    st.subheader("Top 3 loss ratio movers")
+    ui.section("Where", "Top 3 loss ratio movers")
     movers = queries.top_movers(slicers.insurer, slicers.year)
     if movers.empty:
         st.info(f"No movers for {slicers.year}: there is no prior year to compare with.")
     else:
-        st.caption(
+        ui.note(
             f"The line groups whose gross loss ratio moved most against {slicers.year - 1}, "
             "in either direction."
         )
-        for column, (_, mover) in zip(st.columns(3), movers.iterrows(), strict=False):
-            column.metric(
-                mover["line_group"],
-                ui.pct(mover["gross_loss_ratio"]),
-                delta=f"{ui.pts(mover['loss_ratio_change_pts'])} "
-                f"from {ui.pct(mover['gross_loss_ratio_prior'])}",
-                delta_color="inverse",
-                border=True,
-                height="stretch",
-            )
+        st.altair_chart(charts.movers_bars(movers, ui.chart_theme()), width="stretch")
+        ui.table_view(
+            pd.DataFrame(
+                {
+                    "Line group": movers["line_group"],
+                    f"Loss ratio {slicers.year - 1}": movers["gross_loss_ratio_prior"].map(ui.pct),
+                    f"Loss ratio {slicers.year}": movers["gross_loss_ratio"].map(ui.pct),
+                    "Change": movers["loss_ratio_change_pts"].map(ui.pts),
+                }
+            ),
+            label="Show the movers as numbers",
+        )

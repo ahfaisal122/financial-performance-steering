@@ -94,6 +94,45 @@ def headline(insurer: str, year: int, line_group: str) -> pd.DataFrame:
     )
 
 
+def kpi_history(insurer: str, line_group: str) -> pd.DataFrame:
+    """The headline KPIs for every year of one level: the trend lines inside the KPI tiles."""
+    return query(
+        """
+        SELECT
+            gwp.year,
+            gwp.gwp_teur,
+            growth.gwp_growth,
+            lr.gross_loss_ratio,
+            ceded.ceded_share
+        FROM kpi_gwp AS gwp
+        INNER JOIN kpi_gwp_growth AS growth USING (insurer, year, line_group)
+        INNER JOIN kpi_gross_loss_ratio AS lr USING (insurer, year, line_group)
+        INNER JOIN kpi_ceded_share AS ceded USING (insurer, year, line_group)
+        WHERE gwp.insurer = ? AND gwp.line_group = ?
+        ORDER BY gwp.year
+        """,
+        insurer,
+        line_group,
+    )
+
+
+def flags(insurer: str, year: int) -> pd.DataFrame:
+    """The rule-based flags of one company and year, with the numbers behind each."""
+    return query(
+        """
+        SELECT flag, line_group, is_total, gross_loss_ratio, loss_ratio_change_pts,
+            loss_ratio_3y_avg, peer.insurer_short AS peer_name, peer_loss_ratio_change_pts,
+            gwp_growth, gwp_growth_prior, gwp_growth_two_years_ago
+        FROM analysis_flags AS flags
+        LEFT JOIN dim_insurer AS peer ON flags.peer_insurer = peer.insurer
+        WHERE flags.insurer = ? AND flags.year = ?
+        ORDER BY flags.is_total DESC, flags.line_group, flags.flag
+        """,
+        insurer,
+        year,
+    )
+
+
 def lr_walk(insurer: str, year: int) -> pd.DataFrame:
     return query(
         """

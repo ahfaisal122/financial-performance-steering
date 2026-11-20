@@ -2,7 +2,7 @@
 
 Run after the pipeline: streamlit run app/cockpit_app.py
 
-Four pages on the SQL views of the warehouse. The slicers in the sidebar apply
+Five pages on the SQL views of the warehouse. The slicers in the sidebar apply
 to every page, and every page ends with the accounting basis note.
 """
 
@@ -14,6 +14,7 @@ import page_data_quality
 import page_line_of_business
 import page_overview
 import page_peer_market
+import page_summary
 import queries
 import ui
 
@@ -28,15 +29,23 @@ if not queries.warehouse_exists():
 
 ui.apply_style()
 slicers = ui.sidebar_slicers()
+ui.apply_presentation_style()
+ui.masthead(slicers)
 
 page = st.navigation(
     [
+        st.Page(
+            lambda: page_summary.render(slicers),
+            title="Executive summary",
+            icon=":material/summarize:",
+            url_path="summary",
+            default=True,
+        ),
         st.Page(
             lambda: page_overview.render(slicers),
             title="Overview",
             icon=":material/dashboard:",
             url_path="overview",
-            default=True,
         ),
         st.Page(
             lambda: page_line_of_business.render(slicers),

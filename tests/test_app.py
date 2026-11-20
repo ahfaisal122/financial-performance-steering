@@ -18,6 +18,7 @@ APP_FILE = str(APP_DIR / "cockpit_app.py")
 HGB = "Figures follow German local GAAP (HGB)"
 
 PAGES = {
+    "page_summary": "Executive summary",
     "page_overview": "Overview",
     "page_line_of_business": "Line of business",
     "page_peer_market": "Peer and market",
@@ -147,7 +148,7 @@ def test_overview_cards_equal_the_sql_views(cockpit):
         """
     ).fetchone()
 
-    cards = metrics(run_app())
+    cards = metrics(run_page("page_overview", "AGCS SE", "AGCS", 2025, None))
 
     assert cards["GWP, EUR m"][0] == f"{float(gwp) / 1000:,.1f}" == "6,581.3"
     assert cards["GWP growth"][0] == f"{growth:+.1%}"
@@ -180,11 +181,15 @@ def test_overview_top_3_movers_are_the_largest_loss_ratio_changes(cockpit):
         "ORDER BY ABS(loss_ratio_change_pts) DESC LIMIT 3"
     ).fetchall()
 
-    cards = metrics(run_app())
+    at = run_page("page_overview", "AGCS SE", "AGCS", 2025, None)
+    movers = next(f.value for f in at.dataframe if "Change" in f.value.columns)
 
-    for line_group, ratio, change, prior in expected:
-        assert cards[line_group] == (f"{ratio:.1%}", f"{change:+.1f} pts from {prior:.1%}")
-    assert len(cards) == 4 + 3
+    assert movers["Line group"].tolist() == [row[0] for row in expected]
+    for (_, ratio, change, prior), (_, shown) in zip(expected, movers.iterrows(), strict=True):
+        assert shown["Loss ratio 2025"] == f"{ratio:.1%}"
+        assert shown["Loss ratio 2024"] == f"{prior:.1%}"
+        assert shown["Change"] == f"{change:+.1f} pts"
+    assert set(metrics(at)) == {"GWP, EUR m", "GWP growth", "Gross loss ratio", "Ceded share"}
 
 
 def test_overview_walk_text_matches_the_walk_view(cockpit):
@@ -194,7 +199,8 @@ def test_overview_walk_text_matches_the_walk_view(cockpit):
         "WHERE insurer = 'AGCS SE' AND year = 2025 AND is_total"
     ).fetchone()
 
-    text = " ".join(block.value for block in run_app().markdown)
+    at = run_page("page_overview", "AGCS SE", "AGCS", 2025, None)
+    text = " ".join(block.value for block in at.markdown)
 
     assert f"from **{prior:.1%}** to **{current:.1%}** ({total:+.2f} pts)" in text
     assert f"**{rate:+.2f} pts** because line groups' own loss ratios moved" in text
@@ -308,3 +314,136 @@ def test_data_quality_page_shows_reconciliation_and_the_glossary(cockpit):
     reference = next(table for table in tables if "Printed, TEUR" in table.columns)
     assert reference["Pipeline, TEUR"].tolist() == [6523288]
     assert any(HGB in info.value for info in at.info)
+
+
+# Executive summary
+
+
+def test_app_opens_on_the_executive_summary(cockpit):
+    at = run_app()
+
+    assert [title.value for title in at.title] == ["Executive summary"]
+    assert set(metrics(at)) == {"GWP, EUR m", "GWP growth", "Gross loss ratio", "Ceded share"}
+
+
+def test_summary_headline_names_the_numbers_of_the_views(cockpit):
+    gwp, growth, ratio, change = cockpit.execute(
+        "SELECT g.gwp_teur, gr.gwp_growth, c.gross_loss_ratio, c.loss_ratio_change_pts "
+        "FROM kpi_gwp g JOIN kpi_gwp_growth gr USING (insurer, year, line_group) "
+        "JOIN kpi_loss_ratio_change c USING (insurer, year, line_group) "
+        "WHERE g.insurer = 'AGCS SE' AND g.year = 2025 AND g.line_group = 'Total'"
+    ).fetchone()
+    rate_effects = cockpit.execute(
+        "SELECT line_group, rate_effect_pts FROM analysis_lr_walk "
+        "WHERE insurer = 'AGCS SE' AND year = 2025 AND NOT is_total"
+    ).fetchall()
+    (mix,) = cockpit.execute(
+        "SELECT mix_effect_pts FROM analysis_lr_walk "
+        "WHERE insurer = 'AGCS SE' AND year = 2025 AND is_total"
+    ).fetchone()
+    driver = max([*rate_effects, ("the shift in mix", mix)], key=lambda item: abs(item[1]))
+
+    headline = run_page("page_summary", "AGCS SE", "AGCS", 2025, None).markdown[0].value
+
+    verb = "improved" if change < 0 else "worsened"
+    assert headline.startswith(f"AGCS SE, 2025: gross loss ratio **{verb} {abs(change):.1f} pts**")
+    assert f"to **{ratio:.1%}**" in headline
+    assert f"driven mostly by {driver[0]} ({driver[1]:+.2f} pts)" in headline
+    grew = "grew" if growth >= 0 else "fell"
+    assert f"premium {grew} **{abs(growth):.1%}** to **EUR {float(gwp) / 1000:,.1f} m**" in headline
+
+
+def test_summary_shows_one_callout_per_flagged_line_group(cockpit):
+    flagged = {
+        row[0]
+        for row in cockpit.execute(
+            "SELECT DISTINCT line_group FROM analysis_flags "
+            "WHERE insurer = 'AGCS SE' AND year = 2025"
+        ).fetchall()
+    }
+
+    at = run_page("page_summary", "AGCS SE", "AGCS", 2025, None)
+    shown = {
+        block.value.strip("*")
+        for block in at.markdown
+        if block.value.startswith("**") and block.value.endswith("**")
+    }
+
+    assert flagged
+    assert {"Company total" if g == "Total" else g for g in flagged} <= shown
+
+
+def test_summary_first_year_has_no_walk_and_says_so(cockpit):
+    at = run_page("page_summary", "AGCS SE", "AGCS", 2022, None)
+
+    assert "There is no 2021 to compare with." in at.markdown[0].value
+    assert any("No walk for 2022" in info.value for info in at.info)
+
+
+def test_kpi_tiles_show_the_other_company_for_comparison(cockpit):
+    (hdi_ratio,) = cockpit.execute(
+        "SELECT gross_loss_ratio FROM kpi_gross_loss_ratio "
+        "WHERE insurer = 'HDI Global SE' AND year = 2025 AND line_group = 'Total'"
+    ).fetchone()
+
+    at = run_page("page_overview", "AGCS SE", "AGCS", 2025, None)
+
+    # A badge reaches the test harness as markdown: ":green-badge[:material/...: text]".
+    badges = [block.value for block in at.markdown if "-badge[" in block.value]
+    assert any(f"HDI {hdi_ratio:.1%}]" in badge for badge in badges)
+
+
+# Headlines of the detail pages
+
+
+def test_line_of_business_headline_names_the_highest_loss_ratio(cockpit):
+    line_group, ratio = cockpit.execute(
+        "SELECT line_group, gross_loss_ratio FROM analysis_rolling_avg "
+        "WHERE insurer = 'AGCS SE' AND year = 2025 AND NOT is_total "
+        "ORDER BY gross_loss_ratio DESC LIMIT 1"
+    ).fetchone()
+
+    at = run_page("page_line_of_business", "AGCS SE", "AGCS", 2025, None)
+
+    assert f"is in **{line_group}** at **{ratio:.1%}**" in at.markdown[0].value
+
+
+def test_peer_headline_names_the_total_gap(cockpit):
+    gap, market = cockpit.execute(
+        "SELECT peer_gap_pts, market_loss_ratio FROM analysis_peer_market "
+        "WHERE year = 2025 AND is_total"
+    ).fetchone()
+
+    text = run_page("page_peer_market", "AGCS SE", "AGCS", 2025, None).markdown[0].value
+
+    side = "below" if gap < 0 else "above"
+    assert f"**{abs(gap):.1f} pts {side}** HDI" in text
+    assert f"German market ({market:.1%})" in text
+
+
+# Masthead and presentation mode
+
+
+def test_masthead_carries_the_key_figures(cockpit):
+    at = run_app()
+    band = " ".join(str(element.proto) for element in at.get("html"))
+
+    assert "cockpit-masthead" in band
+    assert "AGCS SE · FY 2025" in band
+    assert "6,581.3" in band
+
+
+def test_presentation_mode_hides_the_method_notes_but_keeps_the_footer(cockpit):
+    note = "The Overview page splits the rate effect by line group"
+    at = run_app()
+    assert any(note in caption.value for caption in at.caption)
+
+    at.toggle(key="presentation_mode").set_value(True).run()
+
+    assert not at.exception
+    assert not any(note in caption.value for caption in at.caption)
+    assert any(HGB in caption.value for caption in at.caption)
+    assert any(
+        "Presentation mode" in str(e.proto) or "font-size: 2.6rem" in str(e.proto)
+        for e in at.get("html")
+    )
