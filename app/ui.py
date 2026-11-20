@@ -126,44 +126,49 @@ STYLE = """
 .cockpit-masthead {
     background: linear-gradient(100deg, #0f2747 0%, #163a6b 100%);
     border-radius: 6px;
-    border-bottom: 3px solid #c9a227;
-    padding: 0.8rem 1.2rem 0.85rem 1.2rem;
-    margin-bottom: 0.4rem;
+    border-bottom: 4px solid #c9a227;
+    padding: 1.4rem 1.9rem 1.55rem 1.9rem;
+    margin-bottom: 0.8rem;
+    box-shadow: 0 4px 14px rgba(15, 39, 71, 0.18);
     color: #e8eef6;
 }
 .cockpit-masthead .kicker {
     color: #d4af37;
-    font-size: 0.72rem;
+    font-size: 0.86rem;
     font-weight: 700;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    margin-bottom: 0.55rem;
+    margin-bottom: 1rem;
 }
 .cockpit-masthead .strip {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.4rem 2.2rem;
+    justify-content: space-between;
+    gap: 1rem 1.5rem;
 }
 .cockpit-masthead .item .label {
     color: #9fb3cc;
-    font-size: 0.68rem;
+    font-size: 0.8rem;
     letter-spacing: 0.08em;
+    margin-bottom: 0.2rem;
     text-transform: uppercase;
 }
 .cockpit-masthead .item .value {
     color: #ffffff;
-    font-size: 1.15rem;
+    font-size: 1.85rem;
     font-weight: 650;
+    line-height: 1.15;
+    white-space: nowrap;
     font-variant-numeric: tabular-nums;
 }
 .cockpit-masthead .chip {
     display: inline-block;
-    font-size: 0.74rem;
+    font-size: 0.9rem;
     font-weight: 600;
-    padding: 0.05rem 0.4rem;
-    border-radius: 3px;
-    margin-left: 0.35rem;
-    vertical-align: 0.15rem;
+    padding: 0.12rem 0.5rem;
+    border-radius: 4px;
+    margin-left: 0.5rem;
+    vertical-align: 0.35rem;
 }
 .cockpit-masthead .chip.good { background: #1e7a46; color: #ffffff; }
 .cockpit-masthead .chip.bad { background: #b8365c; color: #ffffff; }
@@ -255,7 +260,7 @@ PRESENTATION_STYLE = """
 .st-key-headline p { font-size: 1.6rem; }
 [data-testid="stMetricValue"] { font-size: 2.5rem; }
 [data-testid="stMainBlockContainer"] [data-testid="stExpander"] { display: none; }
-.cockpit-masthead .item .value { font-size: 1.4rem; }
+.cockpit-masthead .item .value { font-size: 2.05rem; }
 </style>
 """
 
@@ -344,7 +349,7 @@ def masthead(slicers: Slicers) -> None:
     peers = queries.peer_market(slicers.year)
     totals = peers[peers["line_group"] == queries.TOTAL]
     if not totals.empty and totals.iloc[0]["market_status"] == "ok":
-        items.append(("German market loss ratio", pct(totals.iloc[0]["market_loss_ratio"])))
+        items.append(("Market loss ratio", pct(totals.iloc[0]["market_loss_ratio"])))
     other = counterpart(slicers.insurer)
     if other:
         other_row = queries.headline(other[0], slicers.year, slicers.level)
